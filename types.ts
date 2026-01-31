@@ -4,17 +4,35 @@ export type PropertyType = '아파트' | '빌라' | '상가' | '토지';
 
 export interface AuctionItem {
   id: string;
-  caseNumber: string; // 사건번호
+  caseNumber: string;
   title: string;
   location: string;
   propertyType: PropertyType;
-  appraisalValue: number; // 감정가
-  minimumBidPrice: number; // 최저매각가격
+  appraisalValue: number;
+  minimumBidPrice: number;
   status: AuctionStatus;
   auctionDate: string;
   imageUrl: string;
   riskLevel: 'safe' | 'caution' | 'danger';
   description: string;
+}
+
+export interface FAQ {
+  id: string;
+  category: '이용문의' | '입찰/보증금' | '공동입찰' | '안전/보험';
+  question: string;
+  answer: string;
+}
+
+export interface Agent {
+  id: string;
+  name: string;
+  region: string;
+  specialty: string[];
+  experience: string;
+  licenseNumber: string;
+  imageUrl: string;
+  phone: string;
 }
 
 export interface Review {
@@ -34,15 +52,4 @@ export interface Inquiry {
   message: string;
   date: string;
   status: 'pending' | 'completed';
-}
-
-export interface Agent {
-  id: string;
-  name: string;
-  region: string;
-  specialty: string[];
-  experience: string;
-  licenseNumber: string;
-  imageUrl: string;
-  phone: string;
 }

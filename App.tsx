@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './pages/Home';
 import { AuctionList } from './pages/AuctionList';
@@ -9,6 +9,9 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { Consultation } from './pages/Consultation';
 import { ServiceIntro } from './pages/ServiceIntro';
 import { ExpertList } from './pages/ExpertList';
+import { UsageGuide } from './pages/UsageGuide';
+import { SafetySystem } from './pages/SafetySystem';
+import { FAQPage } from './pages/FAQPage';
 
 const App: React.FC = () => {
   return (
@@ -17,7 +20,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<ServiceIntro />} />
+          <Route path="/guide" element={<UsageGuide />} />
           <Route path="/experts" element={<ExpertList />} />
+          <Route path="/safety" element={<SafetySystem />} />
+          <Route path="/faq" element={<FAQPage />} />
           <Route path="/auctions" element={<AuctionList />} />
           <Route path="/auctions/:id" element={<AuctionDetail />} />
           <Route path="/consult" element={<Consultation />} />
