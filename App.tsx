@@ -18,6 +18,8 @@ import { PointsPurchase } from './pages/PointsPurchase';
 import { RefundPolicy } from './pages/RefundPolicy';
 import { ReviewList } from './pages/ReviewList';
 import { AiAnalysis } from './pages/AiAnalysis';
+import { Signup } from './pages/Signup';
+import { Login } from './pages/Login';
 
 const App: React.FC = () => {
   return (
@@ -40,6 +42,8 @@ const App: React.FC = () => {
           <Route path="/consult" element={<Consultation />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/points" element={<PointsPurchase />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Layout>
     </Router>
