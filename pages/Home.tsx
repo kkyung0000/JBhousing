@@ -1,11 +1,14 @@
 
 import React from 'react';
-import { Search, ChevronRight, Calculator, FileText, CheckCircle2, TrendingUp, Paintbrush, Zap, Trophy, ShieldCheck, Map, ArrowRight, Building2, PhoneCall, Users } from 'lucide-react';
+import { Search, ChevronRight, Calculator, FileText, CheckCircle2, TrendingUp, Paintbrush, Zap, Trophy, ShieldCheck, Map, ArrowRight, Building2, PhoneCall, Users, Star } from 'lucide-react';
 import { mockAuctions, mockReviews } from '../data/mockData';
 import { AuctionCard } from '../components/AuctionCard';
 import { Link } from 'react-router-dom';
 
 export const Home: React.FC = () => {
+  // 홈 화면에는 상위 9개의 후기만 노출 (또는 요약형태)
+  const featuredReviews = mockReviews.slice(0, 9);
+
   return (
     <div className="bg-white">
       {/* Hero Section */}
@@ -28,7 +31,6 @@ export const Home: React.FC = () => {
               최적의 입찰 전략으로 성공적인 낙찰을 약속드립니다.
             </p>
             
-            {/* Primary CTA Buttons - Centered and Enlarged */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Link to="/consult" className="w-full sm:w-72 bg-[#D4AF37] text-white px-8 py-5 rounded-2xl font-bold text-xl hover:bg-[#b8962f] transition-all hover:translate-y-[-4px] flex items-center justify-center gap-3 shadow-2xl shadow-amber-900/40">
                 입찰대행 신청 <Zap size={22} />
@@ -95,7 +97,53 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Bidding Process - Inspired by Batoner */}
+      {/* Reviews Section - Updated to handle more reviews and link to list */}
+      <section className="py-24 bg-[#00152e] text-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center mb-16">
+            <div>
+              <h2 className="text-3xl font-bold font-serif mb-2">Success Stories</h2>
+              <p className="opacity-50 text-sm">JB 하우징과 함께 성공 투자를 이룬 고객님들의 생생한 후기</p>
+            </div>
+            <Link to="/reviews" className="bg-[#D4AF37] text-[#002147] px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-white transition flex items-center gap-2">
+              모든 후기 보기 ({mockReviews.length}) <ChevronRight size={14}/>
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredReviews.map(review => (
+              <div key={review.id} className="bg-white/5 p-8 rounded-[2rem] border border-white/10 hover:border-[#D4AF37]/50 transition group flex flex-col justify-between h-full">
+                <div>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center font-bold text-white text-xl">
+                      {review.author[0]}
+                    </div>
+                    <div>
+                      <div className="font-bold group-hover:text-[#D4AF37] transition">{review.author}</div>
+                      <div className="text-[10px] opacity-50 flex items-center gap-1">
+                        <Star size={10} fill="#D4AF37" className="text-[#D4AF37]" /> {review.propertyTitle}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-base italic mb-8 opacity-70 leading-relaxed line-clamp-4">"{review.content}"</p>
+                </div>
+                <div className="flex justify-between items-center pt-6 border-t border-white/10 mt-auto">
+                  <div className="text-[10px] opacity-30 uppercase tracking-widest">{review.date}</div>
+                  <div className="text-[#D4AF37] font-black text-xs bg-[#D4AF37]/10 px-3 py-1 rounded-full">실수익 {review.profitAmount}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-20 text-center">
+            <Link to="/reviews" className="inline-flex items-center gap-3 text-white border border-white/20 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#002147] transition shadow-xl">
+              25개의 성공 사례 전체 보기 <ArrowRight size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Bidding Process */}
       <section className="py-24 bg-slate-50 border-y border-slate-100">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
@@ -120,74 +168,6 @@ export const Home: React.FC = () => {
                     <ArrowRight size={20} />
                   </div>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Smart Analysis Tech Intro */}
-      <section className="py-24">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row gap-16 items-center">
-          <div className="lg:w-1/2">
-             <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-               <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop" className="w-full h-[400px] object-cover" alt="Data analysis" />
-               <div className="absolute inset-0 bg-gradient-to-t from-[#002147]/80 to-transparent flex items-end p-8">
-                  <div className="text-white">
-                    <div className="text-4xl font-bold mb-2">Smart Report</div>
-                    <p className="opacity-80">데이터로 검증된 확실한 투자 수익률</p>
-                  </div>
-               </div>
-             </div>
-          </div>
-          <div className="lg:w-1/2 space-y-8">
-            <h2 className="text-3xl font-bold text-[#002147]">JB만의 <span className="text-[#D4AF37]">스마트 권리분석</span> 리포트</h2>
-            <p className="text-slate-600 leading-relaxed">
-              단순히 서류상 권리만을 확인하지 않습니다. 주변 낙찰 사례 분석, 예상 명도 비용 산출, 인테리어 개선 후 가치 평가까지 통합적으로 분석하여 리포트를 제공합니다.
-            </p>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-slate-700 font-medium">
-                <CheckCircle2 className="text-[#D4AF37]" size={20} /> 실시간 법원 등기 자동 연동 분석
-              </li>
-              <li className="flex items-center gap-3 text-slate-700 font-medium">
-                <CheckCircle2 className="text-[#D4AF37]" size={20} /> 빅데이터 기반 인근 낙찰가 예측
-              </li>
-              <li className="flex items-center gap-3 text-slate-700 font-medium">
-                <CheckCircle2 className="text-[#D4AF37]" size={20} /> 임장 매니저의 1:1 밀착 보고서
-              </li>
-            </ul>
-            <Link to="/consult" className="inline-flex items-center gap-2 text-[#002147] font-bold border-b-2 border-[#D4AF37] pb-1 hover:text-[#D4AF37] transition">
-              리포트 샘플 보기 <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Reviews */}
-      <section className="py-24 bg-[#00152e] text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center mb-16">
-            <h2 className="text-3xl font-bold font-serif">Success Stories</h2>
-            <Link to="/" className="text-sm opacity-60 hover:opacity-100 transition flex items-center gap-1">모든 후기 보기 <ChevronRight size={14}/></Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {mockReviews.map(review => (
-              <div key={review.id} className="bg-white/5 p-10 rounded-2xl border border-white/10 hover:border-[#D4AF37]/50 transition group">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center font-bold text-white text-xl">
-                    {review.author[0]}
-                  </div>
-                  <div>
-                    <div className="font-bold group-hover:text-[#D4AF37] transition">{review.author}</div>
-                    <div className="text-xs opacity-50">{review.propertyTitle}</div>
-                  </div>
-                </div>
-                <p className="text-lg italic mb-8 opacity-70 leading-relaxed">"{review.content}"</p>
-                <div className="flex justify-between items-center pt-6 border-t border-white/10">
-                  <div className="text-xs opacity-40">{review.date}</div>
-                  <div className="text-[#D4AF37] font-bold text-sm">실수익금 {review.profitAmount}</div>
-                </div>
               </div>
             ))}
           </div>

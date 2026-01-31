@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { mockAuctions } from '../data/mockData';
 import { AuctionCard } from '../components/AuctionCard';
-import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Zap, ExternalLink, Globe, Loader2, Info, FileText, Scale } from 'lucide-react';
+import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Zap, ExternalLink, Globe, Loader2, Info, FileText, Scale, AlertTriangle, ShieldAlert } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 
 interface GroundingResult {
@@ -172,6 +172,17 @@ export const AuctionList: React.FC = () => {
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <div className="lg:col-span-2">
+                  {/* CRITICAL LEGAL WARNING */}
+                  <div className="mb-6 p-6 bg-rose-50 border border-rose-100 rounded-3xl flex gap-4 items-start shadow-sm">
+                    <ShieldAlert className="text-rose-600 shrink-0" size={24} />
+                    <div>
+                      <h4 className="font-bold text-rose-900 text-sm mb-1">경고: AI 분석 결과의 법적 효력 안내</h4>
+                      <p className="text-[11px] text-rose-700 leading-relaxed font-medium">
+                        본 AI 리포트는 외부 웹 데이터를 기반으로 요약된 정보입니다. <strong>법정 매각물건명세서</strong>와 실제 데이터가 다를 수 있으며, 오차로 인한 입찰 사고 시 JB 하우징은 법적 책임을 지지 않습니다. <strong>반드시 유료 정밀 권리분석 서비스를 통해 검증하십시오.</strong>
+                      </p>
+                    </div>
+                  </div>
+
                   <div className="bg-white rounded-[2.5rem] p-12 border border-slate-200 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-2 h-full bg-[#D4AF37]"></div>
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
@@ -179,17 +190,11 @@ export const AuctionList: React.FC = () => {
                         <Zap size={14} /> AI Analysis Content
                       </div>
                       <button className="text-[10px] font-bold text-slate-300 hover:text-[#002147] transition flex items-center gap-1">
-                         PDF 저장 <Download size={12} />
+                         PDF 저장 <RefreshCcw size={12} />
                       </button>
                     </div>
                     <div className="text-slate-700 leading-relaxed whitespace-pre-wrap text-[15px] font-medium">
                       {aiSummary}
-                    </div>
-                    <div className="mt-12 p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-3">
-                       <AlertCircle size={16} className="text-amber-600 shrink-0" />
-                       <p className="text-[11px] text-amber-800 leading-normal font-medium">
-                         본 리포트는 AI가 생성한 참고용 데이터이며, 실제 입찰 전 반드시 대법원 공고문 및 현장 조사를 재확인하시기 바랍니다. JB 하우징은 본 정보의 오차로 인한 결과에 책임을 지지 않습니다.
-                       </p>
                     </div>
                   </div>
                 </div>
@@ -228,7 +233,7 @@ export const AuctionList: React.FC = () => {
                   <div className="p-8 bg-gradient-to-br from-[#002147] to-[#00152e] rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full"></div>
                     <h4 className="font-bold text-lg mb-3">전문가의 정밀 분석이 <br/>필요하신가요?</h4>
-                    <p className="text-[11px] opacity-60 mb-6 leading-relaxed">AI 리포트만으로는 부족한 특수 권리분석 및 명도 전략 수립을 위해 베테랑 대리인을 연결해 드립니다.</p>
+                    <p className="text-[11px] opacity-60 mb-6 leading-relaxed">특수 권리(유치권, 법정지상권) 분석 및 명도 전략 수립을 위해 베테랑 매수신청대리인을 연결해 드립니다.</p>
                     <button className="w-full bg-[#D4AF37] text-[#002147] py-4 rounded-2xl font-bold text-sm hover:bg-white transition-all shadow-lg">
                       1:1 대면 상담 신청
                     </button>
@@ -295,11 +300,3 @@ export const AuctionList: React.FC = () => {
     </div>
   );
 };
-
-const Download = (props: any) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-);
-
-const AlertCircle = (props: any) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-alert-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
-);

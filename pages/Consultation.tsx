@@ -1,11 +1,17 @@
 
-import React from 'react';
-/* Fixed: Removed conflicting Smartphone import from lucide-react as it is locally defined below */
-import { Send, PhoneCall, ShieldCheck, MapPin, Info, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Send, PhoneCall, ShieldCheck, MapPin, Info, AlertCircle, FileText, Scale } from 'lucide-react';
 
 export const Consultation: React.FC = () => {
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [agreeMarketing, setAgreeMarketing] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreePrivacy) {
+      alert('개인정보 수집 및 이용에 동의해주세요.');
+      return;
+    }
     alert('상담 신청이 완료되었습니다. 김종필 대표님이 곧 직접 연락드리겠습니다.');
   };
 
@@ -21,17 +27,18 @@ export const Consultation: React.FC = () => {
           </h1>
           <p className="text-xl text-slate-600 mb-12 leading-relaxed">
             복잡한 권리관계로 고민 중이신가요? <br/>
-            (주) JB 하우징의 김종필 대표가 풍부한 실전 경험을 바탕으로 안전하고 확실한 투자 길잡이가 되어 드립니다.
+            (주) JB 하우징은 <strong>법정 수수료 요율을 준수</strong>하며 투명하게 운영됩니다. 김종필 대표가 풍부한 실전 경험을 바탕으로 확실한 투자 길잡이가 되어 드립니다.
           </p>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-10">
-             <div className="flex items-center gap-2 text-rose-600 font-bold text-sm mb-4">
-                <AlertCircle size={18} /> 반드시 확인해주세요!
+          <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 mb-10">
+             <div className="flex items-center gap-2 text-[#002147] font-bold text-sm mb-6 border-b border-slate-200 pb-3">
+                <Scale size={18} className="text-[#D4AF37]" /> 법정 수수료 요율 안내
              </div>
-             <ul className="space-y-3 text-sm text-slate-500">
-                <li>• 입찰 보증금은 입찰 기일 <span className="text-slate-900 font-bold">전일 오후 8시</span>까지 입금 마감됩니다.</li>
-                <li>• 공동입찰 시 모든 참여자의 <span className="text-slate-900 font-bold">전자본인서명확인서</span>가 필요합니다.</li>
-                <li>• 기본 이용료 외에 취득세, 등기 비용 등은 별도로 발생합니다.</li>
+             <ul className="space-y-3 text-xs text-slate-500 leading-relaxed">
+                <li className="flex justify-between"><span>상담 및 권리분석</span> <span className="font-bold text-slate-700">50만 원 범위 내</span></li>
+                <li className="flex justify-between"><span>매수신청대리 (낙찰 시)</span> <span className="font-bold text-slate-700">감정가 1% 또는 낙찰가 1.5% 내</span></li>
+                <li className="flex justify-between"><span>매수신청대리 (미낙찰 시)</span> <span className="font-bold text-slate-700">5만 원 범위 내</span></li>
+                <li className="pt-2 text-[10px] italic">* 모든 수수료는 부가세 별도이며, 실비는 별도 청구될 수 있습니다.</li>
              </ul>
           </div>
           
@@ -81,33 +88,37 @@ export const Consultation: React.FC = () => {
               <input type="text" placeholder="예: 2023타경 12345" className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">입찰 유형</label>
-                <select className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 text-sm font-semibold">
-                  <option>단독 입찰</option>
-                  <option>공동 입찰 (2인 이상)</option>
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">희망 투자 금액</label>
-                <select className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50 text-sm font-semibold">
-                  <option>1억 미만</option>
-                  <option>1억 ~ 3억</option>
-                  <option>3억 ~ 5억</option>
-                  <option>5억 이상</option>
-                </select>
-              </div>
-            </div>
-
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">추가 상담 내용</label>
               <textarea placeholder="상담받고 싶은 내용을 자유롭게 남겨주세요." rows={4} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"></textarea>
             </div>
 
-            <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-3 border border-slate-100">
-              <input type="checkbox" id="privacy" required className="w-5 h-5 rounded-lg border-slate-300 text-[#D4AF37] focus:ring-[#D4AF37]" />
-              <label htmlFor="privacy" className="text-xs text-slate-500 font-medium">개인정보 수집 및 이용(마케팅 활용 포함)에 동의합니다.</label>
+            <div className="space-y-3 pt-4 border-t border-slate-50">
+              <div className="flex items-center gap-3">
+                <input 
+                  type="checkbox" 
+                  id="privacy" 
+                  checked={agreePrivacy}
+                  onChange={(e) => setAgreePrivacy(e.target.checked)}
+                  required 
+                  className="w-5 h-5 rounded-lg border-slate-300 text-[#D4AF37] focus:ring-[#D4AF37]" 
+                />
+                <label htmlFor="privacy" className="text-xs text-slate-500 font-bold">
+                  [필수] 개인정보 수집 및 이용 동의
+                </label>
+              </div>
+              <div className="flex items-center gap-3">
+                <input 
+                  type="checkbox" 
+                  id="marketing" 
+                  checked={agreeMarketing}
+                  onChange={(e) => setAgreeMarketing(e.target.checked)}
+                  className="w-5 h-5 rounded-lg border-slate-300 text-[#D4AF37] focus:ring-[#D4AF37]" 
+                />
+                <label htmlFor="marketing" className="text-xs text-slate-400">
+                  [선택] 이벤트 및 투자 정보 SMS 수신 동의
+                </label>
+              </div>
             </div>
 
             <button type="submit" className="w-full bg-[#002147] text-white py-5 rounded-2xl font-bold text-xl hover:bg-slate-900 transition-all flex items-center justify-center gap-2 shadow-xl shadow-slate-200 active:scale-95">

@@ -15,11 +15,20 @@ export interface AuctionItem {
   imageUrl: string;
   riskLevel: 'safe' | 'caution' | 'danger';
   description: string;
-  // 추가된 필드
-  isOccupiedByOwner: boolean; // 소유자 점유 여부
-  hasPriorityRight: boolean; // 대항력 있는 임차인 유무
-  expectedRepairCost: number; // 예상 수리비
-  expectedEvictionCost: number; // 예상 명도비
+  isOccupiedByOwner: boolean;
+  hasPriorityRight: boolean;
+  expectedRepairCost: number;
+  expectedEvictionCost: number;
+}
+
+export interface PointPackage {
+  id: string;
+  name: string;
+  points: number;
+  bonusPoints: number;
+  price: number;
+  isPopular?: boolean;
+  description: string;
 }
 
 export interface FAQ {

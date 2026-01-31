@@ -14,6 +14,9 @@ import { SafetySystem } from './pages/SafetySystem';
 import { FAQPage } from './pages/FAQPage';
 import { TermsOfService } from './pages/TermsOfService';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { PointsPurchase } from './pages/PointsPurchase';
+import { RefundPolicy } from './pages/RefundPolicy';
+import { ReviewList } from './pages/ReviewList';
 
 const App: React.FC = () => {
   return (
@@ -28,10 +31,13 @@ const App: React.FC = () => {
           <Route path="/faq" element={<FAQPage />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
+          <Route path="/reviews" element={<ReviewList />} />
           <Route path="/auctions" element={<AuctionList />} />
           <Route path="/auctions/:id" element={<AuctionDetail />} />
           <Route path="/consult" element={<Consultation />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/points" element={<PointsPurchase />} />
         </Routes>
       </Layout>
     </Router>
