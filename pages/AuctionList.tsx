@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { mockAuctions } from '../data/mockData';
 import { AuctionCard } from '../components/AuctionCard';
-import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Zap, ExternalLink, Globe, Loader2, Info, FileText, Scale, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Zap, ExternalLink, Globe, Loader2, Info, FileText, Scale, AlertTriangle, ShieldAlert, Wallet, CreditCard, Lock } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
+import { Link } from 'react-router-dom';
 
 interface GroundingResult {
   title: string;
@@ -19,6 +20,10 @@ export const AuctionList: React.FC = () => {
   const [aiResults, setAiResults] = useState<GroundingResult[]>([]);
   const [aiSummary, setAiSummary] = useState<string | null>(null);
   
+  // 가상의 사용자 포인트 상태 (실제 앱에서는 전역 Context 또는 API에서 가져옴)
+  const [userPoints, setUserPoints] = useState(15000); // 데모용 초기 포인트
+  const SEARCH_COST = 5000;
+
   const categories = ['전체', '아파트', '상가', '토지', '빌라', '공장'];
   
   const filtered = filter === '전체' 
@@ -28,6 +33,15 @@ export const AuctionList: React.FC = () => {
   const handleLiveSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
+
+    // 포인트 체크
+    if (userPoints < SEARCH_COST) {
+      alert(`포인트가 부족합니다. (현재: ${userPoints.toLocaleString()}P / 필요: ${SEARCH_COST.toLocaleString()}P)`);
+      return;
+    }
+
+    const confirmSearch = window.confirm(`실시간 AI 분석을 시작하시겠습니까?\n1회 검색 시 ${SEARCH_COST.toLocaleString()}P가 차감됩니다.`);
+    if (!confirmSearch) return;
 
     setIsSearching(true);
     setAiResults([]);
@@ -62,8 +76,13 @@ export const AuctionList: React.FC = () => {
           }));
         setAiResults(results);
       }
+
+      // 검색 성공 시 포인트 차감
+      setUserPoints(prev => prev - SEARCH_COST);
+      
     } catch (error) {
       console.error("AI Search Error:", error);
+      alert("검색 중 오류가 발생했습니다. 포인트는 차감되지 않았습니다.");
     } finally {
       setIsSearching(false);
     }
@@ -75,19 +94,25 @@ export const AuctionList: React.FC = () => {
       <div className="bg-[#002147] pt-24 pb-32 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#D4AF37] blur-[200px] opacity-10 rounded-full"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-wrap items-center gap-4 mb-8">
             <div className="flex items-center gap-2 bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-emerald-500/20">
               <RefreshCcw size={12} className="animate-spin-slow" /> Official DB Sync
             </div>
-            <div className="text-white/40 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
-              <Globe size={12} /> Connected to courtauction.go.kr
+            <div className="bg-white/10 backdrop-blur-md text-[#D4AF37] px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 border border-white/10">
+              <Wallet size={14} /> 나의 잔여 포인트: <span className="text-white">{userPoints.toLocaleString()} P</span>
             </div>
+            {userPoints < SEARCH_COST && (
+              <Link to="/points" className="bg-[#D4AF37] text-[#002147] px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 hover:bg-white transition">
+                <CreditCard size={12} /> 포인트 충전하기
+              </Link>
+            )}
           </div>
           
           <div className="max-w-4xl">
-            <h1 className="text-5xl font-bold text-white mb-8 font-serif leading-tight">
+            <h1 className="text-5xl font-bold text-white mb-4 font-serif leading-tight">
               법원경매 <span className="text-[#D4AF37]">실시간 통합 검색</span>
             </h1>
+            <p className="text-white/40 text-sm mb-10 font-medium">※ 실시간 AI 리포트 생성은 1회당 5,000포인트가 차감되는 프리미엄 서비스입니다.</p>
             
             <form onSubmit={handleLiveSearch} className="flex flex-col lg:flex-row gap-4">
               <div className="flex-grow relative">
@@ -103,10 +128,10 @@ export const AuctionList: React.FC = () => {
               <button 
                 type="submit"
                 disabled={isSearching}
-                className="bg-[#D4AF37] text-[#002147] px-12 py-6 rounded-3xl font-black text-xl hover:bg-white transition-all shadow-xl disabled:opacity-50 flex items-center justify-center gap-3 active:scale-95"
+                className="bg-[#D4AF37] text-[#002147] px-12 py-6 rounded-3xl font-black text-xl hover:bg-white transition-all shadow-xl disabled:opacity-50 flex items-center justify-center gap-3 active:scale-95 group"
               >
-                {isSearching ? <Loader2 className="animate-spin" /> : <Zap size={24} />}
-                통합 검색
+                {isSearching ? <Loader2 className="animate-spin" /> : <Zap size={24} className="group-hover:scale-125 transition" />}
+                {userPoints < SEARCH_COST ? '포인트 부족' : '통합 검색 (5,000P)'}
               </button>
             </form>
           </div>
@@ -144,7 +169,7 @@ export const AuctionList: React.FC = () => {
         </div>
       </div>
 
-      {/* AI Search Results */}
+      {/* AI Search Results Section */}
       {(isSearching || aiSummary) && (
         <div className="bg-slate-50 border-b border-slate-200">
           <div className="max-w-7xl mx-auto px-4 py-16">
@@ -165,8 +190,8 @@ export const AuctionList: React.FC = () => {
                   <FileText size={32} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-200 animate-pulse" />
                 </div>
                 <div className="text-center">
-                  <p className="text-xl font-bold text-[#002147] mb-2">실시간 법원 경매 데이터를 불러오는 중...</p>
-                  <p className="text-sm text-slate-400">사건 번호, 물건 내역, 권리 관계를 동기화하고 있습니다.</p>
+                  <p className="text-xl font-bold text-[#002147] mb-2">프리미엄 데이터 생성 중... (-5,000P 차감)</p>
+                  <p className="text-sm text-slate-400">사건 번호, 물건 내역, 권리 관계를 동기화하고 리포트를 작성 중입니다.</p>
                 </div>
               </div>
             ) : (
@@ -187,7 +212,7 @@ export const AuctionList: React.FC = () => {
                     <div className="absolute top-0 left-0 w-2 h-full bg-[#D4AF37]"></div>
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
                       <div className="flex items-center gap-2 text-[10px] font-black text-[#D4AF37] uppercase tracking-widest">
-                        <Zap size={14} /> AI Analysis Content
+                        <Zap size={14} /> AI Analysis Content (Premium)
                       </div>
                       <button className="text-[10px] font-bold text-slate-300 hover:text-[#002147] transition flex items-center gap-1">
                          PDF 저장 <RefreshCcw size={12} />
@@ -241,6 +266,32 @@ export const AuctionList: React.FC = () => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Search Requirement State (Only show if not searched yet) */}
+      {!isSearching && !aiSummary && (
+        <div className="max-w-7xl mx-auto px-4 pt-16">
+          <div className="bg-slate-50 rounded-[3rem] p-12 border border-slate-100 flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-[#D4AF37] shadow-sm mb-6">
+              <Lock size={28} />
+            </div>
+            <h3 className="text-xl font-bold text-[#002147] mb-2">프리미엄 통합 검색 안내</h3>
+            <p className="text-sm text-slate-500 max-w-lg leading-relaxed mb-8">
+              대법원 경매 데이터를 실시간으로 수집하고 AI로 정밀 분석하는 리포트 기능은 프리미엄 회원에게만 제공됩니다. 검색 시 5,000포인트가 차감되며, 물건의 권리 관계와 예상 입찰가 가이드를 포함한 리포트가 생성됩니다.
+            </p>
+            <div className="flex gap-4">
+              <button 
+                onClick={() => document.querySelector('input')?.focus()}
+                className="bg-[#002147] text-white px-8 py-3 rounded-2xl font-bold text-sm hover:scale-105 transition shadow-xl"
+              >
+                검색어 입력하기
+              </button>
+              <Link to="/points" className="bg-white border border-slate-200 text-slate-600 px-8 py-3 rounded-2xl font-bold text-sm hover:bg-slate-50 transition">
+                포인트 충전
+              </Link>
+            </div>
           </div>
         </div>
       )}

@@ -6,8 +6,10 @@ import { AuctionCard } from '../components/AuctionCard';
 import { Link } from 'react-router-dom';
 
 export const Home: React.FC = () => {
-  // 홈 화면에는 상위 9개의 후기만 노출 (또는 요약형태)
-  const featuredReviews = mockReviews.slice(0, 9);
+  // 후기를 날짜 역순(최신순)으로 정렬 후 상위 9개 추출
+  const featuredReviews = [...mockReviews]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 9);
 
   return (
     <div className="bg-white">
@@ -90,20 +92,20 @@ export const Home: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {mockAuctions.map(item => (
+            {mockAuctions.slice(0, 4).map(item => (
               <AuctionCard key={item.id} item={item} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Reviews Section - Updated to handle more reviews and link to list */}
+      {/* Reviews Section */}
       <section className="py-24 bg-[#00152e] text-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between items-center mb-16">
             <div>
               <h2 className="text-3xl font-bold font-serif mb-2">Success Stories</h2>
-              <p className="opacity-50 text-sm">JB 하우징과 함께 성공 투자를 이룬 고객님들의 생생한 후기</p>
+              <p className="opacity-50 text-sm">최근 성공 투자를 이룬 고객님들의 생생한 후기</p>
             </div>
             <Link to="/reviews" className="bg-[#D4AF37] text-[#002147] px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-white transition flex items-center gap-2">
               모든 후기 보기 ({mockReviews.length}) <ChevronRight size={14}/>
@@ -137,7 +139,7 @@ export const Home: React.FC = () => {
 
           <div className="mt-20 text-center">
             <Link to="/reviews" className="inline-flex items-center gap-3 text-white border border-white/20 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white hover:text-[#002147] transition shadow-xl">
-              25개의 성공 사례 전체 보기 <ArrowRight size={20} />
+              {mockReviews.length}개의 성공 사례 전체 보기 <ArrowRight size={20} />
             </Link>
           </div>
         </div>

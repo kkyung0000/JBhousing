@@ -7,11 +7,13 @@ import { Link } from 'react-router-dom';
 export const ReviewList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const filteredReviews = mockReviews.filter(review => 
-    review.author.includes(searchTerm) || 
-    review.propertyTitle.includes(searchTerm) ||
-    review.content.includes(searchTerm)
-  );
+  const filteredReviews = [...mockReviews]
+    .filter(review => 
+      review.author.includes(searchTerm) || 
+      review.propertyTitle.includes(searchTerm) ||
+      review.content.includes(searchTerm)
+    )
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -26,7 +28,7 @@ export const ReviewList: React.FC = () => {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 font-serif">낙찰 성공 사례 리스트</h1>
           <p className="text-lg opacity-70 max-w-2xl mx-auto leading-relaxed">
-            JB 하우징과 함께한 25명의 실제 고객들의 생생한 낙찰 후기와 <br className="hidden md:block"/>
+            JB 하우징과 함께한 {mockReviews.length}명의 실제 고객들의 생생한 낙찰 후기와 <br className="hidden md:block"/>
             투명한 수익 실현 데이터를 확인하세요.
           </p>
         </div>
