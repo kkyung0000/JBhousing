@@ -1,10 +1,21 @@
 
 import React, { useState } from 'react';
-import { Send, PhoneCall, ShieldCheck, MapPin, Info, AlertCircle, FileText, Scale } from 'lucide-react';
+import { Send, PhoneCall, ShieldCheck, MapPin, Info, AlertCircle, FileText, Scale, Smartphone } from 'lucide-react';
 
 export const Consultation: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    caseNumber: '',
+    message: ''
+  });
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [agreeMarketing, setAgreeMarketing] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -12,7 +23,25 @@ export const Consultation: React.FC = () => {
       alert('개인정보 수집 및 이용에 동의해주세요.');
       return;
     }
-    alert('상담 신청이 완료되었습니다. 김종필 대표님이 곧 직접 연락드리겠습니다.');
+
+    // 이메일 발송을 위한 데이터 구성 (대표님 이메일: contact@jbhousing.com)
+    const representativeEmail = "contact@jbhousing.com";
+    const subject = encodeURIComponent(`[JB 하우징 대리입찰 신청] ${formData.name}님으로부터의 신청 건`);
+    const body = encodeURIComponent(
+      `대리입찰 신청서 정보\n` +
+      `---------------------------------\n` +
+      `신청인 성함: ${formData.name}\n` +
+      `연락처: ${formData.phone}\n` +
+      `사건번호: ${formData.caseNumber || '정보없음'}\n` +
+      `상담 요청 내용:\n${formData.message}\n` +
+      `---------------------------------\n` +
+      `본 메일은 JB 하우징 웹사이트 상담 폼을 통해 자동 생성되었습니다.`
+    );
+
+    // 이메일 클라이언트 호출
+    window.location.href = `mailto:${representativeEmail}?subject=${subject}&body=${body}`;
+
+    alert('상담 신청 데이터가 이메일로 준비되었습니다. 확인 버튼을 누르시면 이메일 창이 열립니다. 김종필 대표님이 곧 연락드리겠습니다.');
   };
 
   return (
@@ -75,22 +104,52 @@ export const Consultation: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
                <div className="space-y-2">
                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">성함</label>
-                 <input type="text" placeholder="홍길동" required className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" />
+                 <input 
+                  type="text" 
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="홍길동" 
+                  required 
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" 
+                 />
                </div>
                <div className="space-y-2">
                  <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">연락처</label>
-                 <input type="tel" placeholder="010-0000-0000" required className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" />
+                 <input 
+                  type="tel" 
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="010-0000-0000" 
+                  required 
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" 
+                 />
                </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">사건 번호 (선택사항)</label>
-              <input type="text" placeholder="예: 2023타경 12345" className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" />
+              <input 
+                type="text" 
+                name="caseNumber"
+                value={formData.caseNumber}
+                onChange={handleInputChange}
+                placeholder="예: 2023타경 12345" 
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50" 
+              />
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">추가 상담 내용</label>
-              <textarea placeholder="상담받고 싶은 내용을 자유롭게 남겨주세요." rows={4} className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"></textarea>
+              <textarea 
+                name="message"
+                value={formData.message}
+                onChange={handleInputChange}
+                placeholder="상담받고 싶은 내용을 자유롭게 남겨주세요." 
+                rows={4} 
+                className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/50"
+              ></textarea>
             </div>
 
             <div className="space-y-3 pt-4 border-t border-slate-50">
@@ -130,7 +189,3 @@ export const Consultation: React.FC = () => {
     </div>
   );
 };
-
-const Smartphone = (props: any) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-smartphone"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-);
