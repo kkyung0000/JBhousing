@@ -172,7 +172,7 @@ export const PointsPurchase: React.FC = () => {
             <ul className="space-y-4 text-xs opacity-70">
               <li className="flex gap-2">
                 <span className="text-[#D4AF37] font-bold">•</span>
-                <span>정밀 권리분석 리포트 1회 열람 (5,000 P)</span>
+                <span>정밀 권리분석 리포트 1회 열람 (10,000 P)</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-[#D4AF37] font-bold">•</span>

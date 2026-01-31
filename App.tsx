@@ -17,6 +17,7 @@ import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { PointsPurchase } from './pages/PointsPurchase';
 import { RefundPolicy } from './pages/RefundPolicy';
 import { ReviewList } from './pages/ReviewList';
+import { AiAnalysis } from './pages/AiAnalysis';
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
           <Route path="/reviews" element={<ReviewList />} />
           <Route path="/auctions" element={<AuctionList />} />
           <Route path="/auctions/:id" element={<AuctionDetail />} />
+          <Route path="/ai-analysis" element={<AiAnalysis />} />
           <Route path="/consult" element={<Consultation />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/points" element={<PointsPurchase />} />

@@ -18,8 +18,12 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({ item }) => {
   };
 
   return (
-    <Link to={`/auctions/${item.id}`} className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100">
-      <div className="relative h-48 overflow-hidden">
+    <Link 
+      to={`/auctions/${item.id}`} 
+      state={{ auctionData: item }} // 검색된 실시간 데이터를 상세 페이지로 전달
+      className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 h-full flex flex-col"
+    >
+      <div className="relative h-48 overflow-hidden shrink-0">
         <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
         <div className="absolute top-3 left-3 flex gap-2">
           <span className="bg-[#002147] text-white px-2 py-1 rounded text-xs font-bold">{item.status}</span>
@@ -30,7 +34,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({ item }) => {
         </div>
       </div>
       
-      <div className="p-5">
+      <div className="p-5 flex flex-col flex-grow">
         <div className="text-[10px] text-slate-400 font-bold mb-1 uppercase">{item.caseNumber}</div>
         <h3 className="font-bold text-lg text-slate-900 mb-2 truncate group-hover:text-[#D4AF37] transition">{item.title}</h3>
         
@@ -39,7 +43,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({ item }) => {
           <span className="truncate">{item.location}</span>
         </div>
 
-        <div className="space-y-2 border-t border-slate-50 pt-4">
+        <div className="space-y-2 border-t border-slate-50 pt-4 mt-auto">
           <div className="flex justify-between items-end">
             <span className="text-slate-400 text-xs">감정가</span>
             <span className="text-slate-600 font-medium">{formatKRW(item.appraisalValue)}</span>

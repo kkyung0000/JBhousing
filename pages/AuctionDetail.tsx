@@ -1,18 +1,24 @@
 
-import React, { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { mockAuctions } from '../data/mockData';
-import { MapPin, Calendar, CheckCircle2, AlertCircle, Info, Calculator, Download, Share2, Phone, Zap, Star, ShieldCheck, TrendingUp, DollarSign, Hammer, UserMinus } from 'lucide-react';
+import { MapPin, Calendar, CheckCircle2, AlertCircle, Info, Calculator, Download, Share2, Phone, Zap, Star, ShieldCheck, TrendingUp, DollarSign, Hammer, UserMinus, ExternalLink, Globe } from 'lucide-react';
+import { AuctionItem } from '../types';
 
 export const AuctionDetail: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const auction = mockAuctions.find(a => a.id === id);
+  const location = useLocation();
+  
+  // Link state를 통해 전달받은 데이터가 있으면 그것을 사용, 없으면 mock 데이터에서 찾음
+  const auctionFromState = location.state?.auctionData as AuctionItem | undefined;
+  const auctionFromMock = mockAuctions.find(a => a.id === id);
+  const auction = auctionFromState || auctionFromMock;
 
   // States for Calculator
   const [bidPrice, setBidPrice] = useState(auction?.minimumBidPrice || 0);
-  const [expectedRentDeposit, setExpectedRentDeposit] = useState(50000000); // 전세금 또는 보증금
-  const [monthlyRent, setMonthlyRent] = useState(1500000); // 월세
+  const [expectedRentDeposit, setExpectedRentDeposit] = useState(50000000); 
+  const [monthlyRent, setMonthlyRent] = useState(1500000); 
   const [repairCost, setRepairCost] = useState(auction?.expectedRepairCost || 10000000);
   const [evictionCost, setEvictionCost] = useState(auction?.expectedEvictionCost || 5000000);
 
@@ -25,11 +31,10 @@ export const AuctionDetail: React.FC = () => {
     );
   }
 
-  // Derived Calculations
-  const taxRate = bidPrice > 600000000 ? 0.033 : 0.011; // 단순화된 취득세율 (실제는 더 복잡함)
+  const taxRate = bidPrice > 600000000 ? 0.033 : 0.011; 
   const acquisitionTax = Math.floor(bidPrice * taxRate);
   const totalInvestment = bidPrice + acquisitionTax + repairCost + evictionCost;
-  const netInvestment = totalInvestment - expectedRentDeposit; // 전세/보증금 제외 실투자금
+  const netInvestment = totalInvestment - expectedRentDeposit; 
   
   const annualProfit = monthlyRent * 12;
   const roi = netInvestment > 0 ? ((annualProfit / netInvestment) * 100).toFixed(2) : "0.00";
@@ -60,6 +65,16 @@ export const AuctionDetail: React.FC = () => {
             
             <div className="flex items-center gap-3 w-full md:w-auto">
               <button className="flex-grow md:flex-grow-0 p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition flex justify-center"><Share2 size={20}/></button>
+              {auction.externalUrl && (
+                <a 
+                  href={auction.externalUrl} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="flex-grow md:flex-grow-0 bg-slate-100 text-[#002147] px-6 py-4 rounded-xl font-bold hover:bg-slate-200 transition flex items-center justify-center gap-2 border border-slate-200"
+                >
+                  <Globe size={18} /> 공식 공고 확인
+                </a>
+              )}
               <a href="tel:063-715-1213" className="flex-grow md:flex-grow-0 bg-[#002147] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2 shadow-lg shadow-slate-100">
                 <Phone size={18} /> 실시간 유선 상담
               </a>
@@ -86,8 +101,8 @@ export const AuctionDetail: React.FC = () => {
              <div className="bg-emerald-50 p-6 rounded-3xl border border-emerald-100">
                 <ShieldCheck className="text-emerald-600 mb-3" size={24} />
                 <div className="text-xs font-bold text-emerald-800 uppercase mb-1">권리 안전도</div>
-                <div className="text-xl font-black text-emerald-900">SAFE</div>
-                <p className="text-[11px] text-emerald-700 mt-2">말소기준권리 이후 모든 권리 소멸 확인됨</p>
+                <div className="text-xl font-black text-emerald-900">{auction.riskLevel.toUpperCase()}</div>
+                <p className="text-[11px] text-emerald-700 mt-2">AI 엔진이 판독한 기본 권리 안전성 지수</p>
              </div>
              <div className="bg-blue-50 p-6 rounded-3xl border border-blue-100">
                 <TrendingUp className="text-blue-600 mb-3" size={24} />
@@ -123,29 +138,13 @@ export const AuctionDetail: React.FC = () => {
                   <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">입찰 기일</div>
                   <div className="text-lg font-bold">{auction.auctionDate}</div>
                 </div>
-                <div>
-                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">토지/건물 면적</div>
-                  <div className="text-sm font-bold">84.9㎡ / 114.5㎡</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">건물 층수</div>
-                  <div className="text-sm font-bold">25층 중 12층</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">보존 등기일</div>
-                  <div className="text-sm font-bold">2010.05.20</div>
-                </div>
-                <div>
-                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">점유 관계</div>
-                  <div className="text-sm font-bold">{auction.isOccupiedByOwner ? '채무자(소유자)' : '임차인'}</div>
-                </div>
              </div>
              
              <div className="mt-12 pt-10 border-t border-slate-100">
-                <h4 className="font-bold text-[#002147] mb-4">전문가 한줄평</h4>
-                <blockquote className="bg-slate-50 p-6 rounded-2xl border-l-4 border-[#D4AF37] text-slate-600 italic">
-                  "{auction.description}"
-                </blockquote>
+                <h4 className="font-bold text-[#002147] mb-4">물건 설명 및 분석</h4>
+                <div className="bg-slate-50 p-6 rounded-2xl border-l-4 border-[#D4AF37] text-slate-600 text-sm leading-relaxed">
+                  {auction.description || "상세 분석 내용이 준비 중입니다. 전문가 상담을 통해 확인하세요."}
+                </div>
              </div>
           </div>
         </div>
@@ -157,7 +156,7 @@ export const AuctionDetail: React.FC = () => {
               <div className="w-10 h-10 bg-[#D4AF37] rounded-xl flex items-center justify-center text-[#002147]">
                 <Calculator size={20} />
               </div>
-              <h3 className="text-xl font-bold tracking-tight">정밀 수익률 계산기</h3>
+              <h3 className="text-xl font-bold tracking-tight">수익률 계산기</h3>
             </div>
             
             <div className="space-y-5">
@@ -174,27 +173,6 @@ export const AuctionDetail: React.FC = () => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest">예상 수리비</label>
-                    <input 
-                      type="number" 
-                      value={repairCost}
-                      onChange={(e) => setRepairCost(Number(e.target.value))}
-                      className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 font-bold text-sm" 
-                    />
-                 </div>
-                 <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-white/50 uppercase tracking-widest">예상 명도비</label>
-                    <input 
-                      type="number" 
-                      value={evictionCost}
-                      onChange={(e) => setEvictionCost(Number(e.target.value))}
-                      className="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 font-bold text-sm" 
-                    />
-                 </div>
-              </div>
-
               <div className="pt-4 border-t border-white/10">
                  <div className="flex justify-between text-xs mb-2 opacity-60">
                     <span>취등록세(예상)</span>
@@ -208,7 +186,7 @@ export const AuctionDetail: React.FC = () => {
 
               <div className="pt-8 space-y-4">
                  <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
-                    <div className="text-[10px] font-bold text-white/40 mb-1">연간 수익률 (월세 {formatKRW(monthlyRent)} 기준)</div>
+                    <div className="text-[10px] font-bold text-white/40 mb-1">연간 수익률 (월세 기준)</div>
                     <div className="text-3xl font-black text-[#D4AF37]">{roi}%</div>
                     <div className="text-[10px] text-white/30 mt-1">실투자금: {formatKRW(netInvestment)}</div>
                  </div>
@@ -217,11 +195,6 @@ export const AuctionDetail: React.FC = () => {
               <button className="w-full bg-[#D4AF37] text-[#002147] py-5 rounded-2xl font-bold text-lg hover:bg-white transition-all shadow-xl shadow-amber-900/40 active:scale-95">
                 대리입찰 신청하기
               </button>
-              
-              <p className="text-[10px] text-white/30 text-center leading-relaxed">
-                위 계산 결과는 단순 시뮬레이션이며, <br/>
-                실제 취등록세 및 대출 한도는 다를 수 있습니다.
-              </p>
             </div>
           </div>
         </div>

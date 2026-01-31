@@ -1,88 +1,111 @@
 
-import React, { useState, useEffect } from 'react';
-import { mockAuctions } from '../data/mockData';
+import React, { useState } from 'react';
 import { AuctionCard } from '../components/AuctionCard';
-import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Zap, ExternalLink, Globe, Loader2, Info, FileText, Scale, AlertTriangle, ShieldAlert, Wallet, CreditCard, Lock } from 'lucide-react';
+import { Search, Map as MapIcon, List, ChevronDown, RefreshCcw, Filter, LayoutGrid, Info, Loader2, Sparkles, ExternalLink, Link as LinkIcon, BookOpen, Gavel } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
-import { Link } from 'react-router-dom';
-
-interface GroundingResult {
-  title: string;
-  uri: string;
-  snippet?: string;
-}
+import { AuctionItem } from '../types';
 
 export const AuctionList: React.FC = () => {
   const [viewType, setViewType] = useState<'list' | 'map'>('list');
-  const [filter, setFilter] = useState('전체');
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const [aiResults, setAiResults] = useState<GroundingResult[]>([]);
-  const [aiSummary, setAiSummary] = useState<string | null>(null);
-  
-  // 가상의 사용자 포인트 상태 (실제 앱에서는 전역 Context 또는 API에서 가져옴)
-  const [userPoints, setUserPoints] = useState(15000); // 데모용 초기 포인트
-  const SEARCH_COST = 5000;
+  const [searchResults, setSearchResults] = useState<AuctionItem[]>([]);
+  const [groundingLinks, setGroundingLinks] = useState<{title: string, uri: string}[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  const categories = ['전체', '아파트', '상가', '토지', '빌라', '공장'];
-  
-  const filtered = filter === '전체' 
-    ? mockAuctions 
-    : mockAuctions.filter(a => a.propertyType === filter);
+  const resourceLinks = [
+    { title: "대한민국 법원경매정보", url: "https://www.courtauction.go.kr", desc: "대법원 공식 경매 공고 및 기일 정보" },
+    { title: "온비드 (Onbid)", url: "https://www.onbid.co.kr", desc: "캠코 공매 및 공공기관 자산 매각" },
+    { title: "대법원 판례정보", url: "https://glaw.scourt.go.kr", desc: "권리분석을 위한 필수 판례 검색" },
+    { title: "정부24 등기부발급", url: "https://www.gov.kr", desc: "부동산 등기부등본 및 건축물대장 발급" },
+  ];
 
-  const handleLiveSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRealSearch = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    // 포인트 체크
-    if (userPoints < SEARCH_COST) {
-      alert(`포인트가 부족합니다. (현재: ${userPoints.toLocaleString()}P / 필요: ${SEARCH_COST.toLocaleString()}P)`);
-      return;
-    }
-
-    const confirmSearch = window.confirm(`실시간 AI 분석을 시작하시겠습니까?\n1회 검색 시 ${SEARCH_COST.toLocaleString()}P가 차감됩니다.`);
-    if (!confirmSearch) return;
-
     setIsSearching(true);
-    setAiResults([]);
-    setAiSummary(null);
+    setHasSearched(true);
+    setSearchResults([]);
+    setGroundingLinks([]);
 
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: `대한민국 대법원 법원경매정보(courtauction.go.kr)의 공고 데이터를 바탕으로 다음 검색어에 대한 실시간 경매 물건 리포트를 작성해줘: "${searchQuery}". 
+        contents: `대한민국 대법원 경매 정보에서 "${searchQuery}"와 관련된 실제 진행 중인 경매 물건 리스트를 찾아줘. 
+        각 물건에 대해 다음 정보를 포함해서 리스트 형식으로 알려줘:
+        사건번호, 물건명, 소재지, 물건종류(아파트/상가/토지/빌라 중 하나), 감정가(원 단위), 최저가(원 단위), 매각기일, 위험도(safe/caution/danger 중 하나), 해당 물건 정보를 더 자세히 볼 수 있는 예상 소스 링크(외부URL).
         
-        답변 형식은 반드시 다음 내용을 포함해야 해:
-        1. [물건 요약] 핵심 사건 정보 (사건번호, 소재지, 물건종류)
-        2. [입찰 정보] 감정가, 최저가, 매각기일
-        3. [전문가 분석] 권리분석 특이사항 및 투자 포인트
-        4. [주의사항] 유치권, 임차인 등 리스크 포인트`,
+        결과는 반드시 다음 JSON 형식을 따르는 텍스트 블록으로 포함해줘:
+        \`\`\`json
+        [
+          {
+            "caseNumber": "2024타경 1234",
+            "title": "물건이름",
+            "location": "주소",
+            "propertyType": "아파트",
+            "appraisalValue": 500000000,
+            "minimumBidPrice": 400000000,
+            "status": "진행",
+            "auctionDate": "2025-05-20",
+            "riskLevel": "safe",
+            "description": "설명",
+            "externalUrl": "https://www.courtauction.go.kr/..."
+          }
+        ]
+        \`\`\``,
         config: {
           tools: [{ googleSearch: {} }],
         },
       });
 
       const text = response.text;
-      setAiSummary(text);
+      
+      const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/\[([\s\S]*?)\]/);
+      if (jsonMatch) {
+        try {
+          const rawData = JSON.parse(jsonMatch[0].replace(/```json|```/g, ''));
+          const mappedResults: AuctionItem[] = rawData.map((item: any, index: number) => ({
+            id: `real-${index}-${Date.now()}`,
+            caseNumber: item.caseNumber || '사건번호 정보없음',
+            title: item.title || '물건명 정보없음',
+            location: item.location || '소재지 정보없음',
+            propertyType: (item.propertyType as any) || '아파트',
+            appraisalValue: Number(item.appraisalValue) || 0,
+            minimumBidPrice: Number(item.minimumBidPrice) || 0,
+            status: (item.status as any) || '진행',
+            auctionDate: item.auctionDate || '기일 정보없음',
+            imageUrl: `https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800&auto=format&fit=crop`,
+            riskLevel: (item.riskLevel as any) || 'safe',
+            description: item.description || '',
+            isOccupiedByOwner: true,
+            hasPriorityRight: false,
+            expectedRepairCost: 0,
+            expectedEvictionCost: 0,
+            externalUrl: item.externalUrl || "https://www.courtauction.go.kr"
+          }));
+          setSearchResults(mappedResults);
+        } catch (err) {
+          console.error("JSON Parsing Error", err);
+        }
+      }
 
       const chunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       if (chunks) {
-        const results: GroundingResult[] = chunks
+        const links = chunks
           .filter((chunk: any) => chunk.web)
           .map((chunk: any) => ({
             title: chunk.web.title,
             uri: chunk.web.uri
           }));
-        setAiResults(results);
+        setGroundingLinks(links);
       }
 
-      // 검색 성공 시 포인트 차감
-      setUserPoints(prev => prev - SEARCH_COST);
-      
     } catch (error) {
-      console.error("AI Search Error:", error);
-      alert("검색 중 오류가 발생했습니다. 포인트는 차감되지 않았습니다.");
+      console.error("Search Error:", error);
+      alert("데이터를 가져오는 중 오류가 발생했습니다.");
     } finally {
       setIsSearching(false);
     }
@@ -92,262 +115,168 @@ export const AuctionList: React.FC = () => {
     <div className="bg-white min-h-screen">
       {/* Search Header */}
       <div className="bg-[#002147] pt-24 pb-32 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#D4AF37] blur-[200px] opacity-10 rounded-full"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[#D4AF37]/5 opacity-20 pointer-events-none"></div>
         <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <div className="flex items-center gap-2 bg-emerald-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-emerald-500/20">
-              <RefreshCcw size={12} className="animate-spin-slow" /> Official DB Sync
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-emerald-500/30">
+               <Sparkles size={12} /> Real-time Court Data Access
             </div>
-            <div className="bg-white/10 backdrop-blur-md text-[#D4AF37] px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 border border-white/10">
-              <Wallet size={14} /> 나의 잔여 포인트: <span className="text-white">{userPoints.toLocaleString()} P</span>
-            </div>
-            {userPoints < SEARCH_COST && (
-              <Link to="/points" className="bg-[#D4AF37] text-[#002147] px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 hover:bg-white transition">
-                <CreditCard size={12} /> 포인트 충전하기
-              </Link>
-            )}
-          </div>
-          
-          <div className="max-w-4xl">
-            <h1 className="text-5xl font-bold text-white mb-4 font-serif leading-tight">
-              법원경매 <span className="text-[#D4AF37]">실시간 통합 검색</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 font-serif leading-tight">
+              법원경매 <span className="text-[#D4AF37]">실시간 물건 검색</span>
             </h1>
-            <p className="text-white/40 text-sm mb-10 font-medium">※ 실시간 AI 리포트 생성은 1회당 5,000포인트가 차감되는 프리미엄 서비스입니다.</p>
+            <p className="text-white/60 text-lg mb-10 leading-relaxed">
+              Google Search Grounding 기술을 통해 대법원 경매 정보를 실시간으로 검색합니다.<br/>
+              지역, 사건번호, 또는 아파트 이름을 입력하고 검색 버튼을 누르세요.
+            </p>
             
-            <form onSubmit={handleLiveSearch} className="flex flex-col lg:flex-row gap-4">
-              <div className="flex-grow relative">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={24} />
-                <input 
-                  type="text" 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="지역, 사건번호, 아파트명으로 즉시 조회 (예: 전주 아파트)" 
-                  className="w-full pl-16 pr-6 py-6 bg-white rounded-3xl text-xl focus:outline-none focus:ring-8 focus:ring-[#D4AF37]/20 border-none shadow-2xl transition-all font-medium"
-                />
-              </div>
+            <form onSubmit={handleRealSearch} className="relative group">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D4AF37] transition" size={24} />
+              <input 
+                type="text" 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="예: 전주 아파트, 2024타경 1234, 서울 상가" 
+                className="w-full pl-16 pr-40 py-5 bg-white rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 border-none shadow-2xl transition-all"
+              />
               <button 
                 type="submit"
                 disabled={isSearching}
-                className="bg-[#D4AF37] text-[#002147] px-12 py-6 rounded-3xl font-black text-xl hover:bg-white transition-all shadow-xl disabled:opacity-50 flex items-center justify-center gap-3 active:scale-95 group"
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-[#D4AF37] text-[#002147] px-8 py-3 rounded-xl font-bold hover:bg-[#b8962f] transition flex items-center gap-2 disabled:opacity-50"
               >
-                {isSearching ? <Loader2 className="animate-spin" /> : <Zap size={24} className="group-hover:scale-125 transition" />}
-                {userPoints < SEARCH_COST ? '포인트 부족' : '통합 검색 (5,000P)'}
+                {isSearching ? <Loader2 className="animate-spin" size={18} /> : <Search size={18} />}
+                검색
               </button>
             </form>
           </div>
         </div>
       </div>
 
-      {/* Filter Toolbar */}
+      {/* Result Toolbar */}
       <div className="bg-white border-b border-slate-100 sticky top-20 z-40 shadow-sm backdrop-blur-md bg-white/90">
-        <div className="max-w-7xl mx-auto px-4 h-18 flex items-center justify-between overflow-x-auto no-scrollbar">
+        <div className="max-w-7xl mx-auto px-4 h-18 flex items-center justify-between py-4">
           <div className="flex items-center gap-6">
-            <div className="flex gap-1 mr-6 border-r border-slate-100 pr-6 hidden md:flex">
-              <button onClick={() => setViewType('list')} className={`p-2.5 rounded-xl transition ${viewType === 'list' ? 'bg-[#002147] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}><List size={20}/></button>
-              <button onClick={() => setViewType('map')} className={`p-2.5 rounded-xl transition ${viewType === 'map' ? 'bg-[#002147] text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:bg-slate-50'}`}><MapIcon size={20}/></button>
+            <div className="flex gap-1 border-r border-slate-100 pr-6 hidden md:flex">
+              <button onClick={() => setViewType('list')} className={`p-2.5 rounded-xl transition ${viewType === 'list' ? 'bg-[#002147] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><List size={20}/></button>
+              <button onClick={() => setViewType('map')} className={`p-2.5 rounded-xl transition ${viewType === 'map' ? 'bg-[#002147] text-white shadow-lg' : 'text-slate-400 hover:bg-slate-50'}`}><MapIcon size={20}/></button>
             </div>
             
-            <div className="flex items-center gap-2">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`px-5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
-                    filter === cat ? 'bg-[#002147] text-white border-[#002147] scale-105' : 'bg-white text-slate-500 border-slate-100 hover:border-slate-300'
-                  }`}
-                >
-                  {cat}
-                </button>
+            <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
+               {isSearching ? "데이터를 불러오는 중..." : hasSearched ? `검색 결과 ${searchResults.length}건` : "검색어를 입력하고 실제 데이터를 확인하세요."}
+            </div>
+          </div>
+
+          {groundingLinks.length > 0 && (
+            <div className="hidden lg:flex items-center gap-3">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Data Sources:</span>
+              {groundingLinks.slice(0, 2).map((link, i) => (
+                <a key={i} href={link.uri} target="_blank" rel="noreferrer" className="text-[10px] bg-slate-50 px-3 py-1 rounded-full border border-slate-200 text-[#002147] hover:bg-[#D4AF37] hover:text-white transition flex items-center gap-1">
+                   {link.title.length > 15 ? link.title.slice(0, 15) + '...' : link.title} <ExternalLink size={10} />
+                </a>
               ))}
             </div>
-          </div>
-
-          <div className="flex items-center gap-4 ml-6">
-            <button className="flex items-center gap-1 text-[11px] text-slate-400 font-bold hover:text-[#002147] transition">최신순 <ChevronDown size={14}/></button>
-            <button className="p-2 text-slate-300 hover:text-slate-800 transition"><RefreshCcw size={16}/></button>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* AI Search Results Section */}
-      {(isSearching || aiSummary) && (
-        <div className="bg-slate-50 border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-4 py-16">
-            <div className="flex items-center gap-3 mb-10">
-              <div className="w-12 h-12 bg-[#002147] rounded-2xl flex items-center justify-center text-[#D4AF37] shadow-xl">
-                <Scale size={24} />
+      {/* Main Content Area */}
+      <div className="max-w-7xl mx-auto px-4 py-20 grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <div className="lg:col-span-3">
+          {isSearching ? (
+            <div className="py-40 flex flex-col items-center justify-center text-center space-y-6">
+              <div className="relative">
+                <div className="w-20 h-20 border-4 border-slate-100 border-t-[#D4AF37] rounded-full animate-spin"></div>
+                <Sparkles size={24} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[#D4AF37] animate-pulse" />
               </div>
               <div>
-                <h2 className="text-2xl font-black text-[#002147]">AI 법원 연동 정밀 리포트</h2>
-                <p className="text-xs text-slate-400 font-bold tracking-widest uppercase">Supreme Court Data Analysis v2.5</p>
+                <h3 className="text-xl font-bold text-[#002147]">실시간 대법원 데이터 검색 중</h3>
+                <p className="text-slate-400 text-sm mt-1">네트워크 상태에 따라 5~10초 정도 소요될 수 있습니다.</p>
               </div>
             </div>
-
-            {isSearching ? (
-              <div className="bg-white rounded-[2.5rem] p-20 flex flex-col items-center justify-center space-y-8 border border-slate-100 shadow-sm">
-                <div className="relative">
-                  <div className="w-24 h-24 border-8 border-slate-100 border-t-[#D4AF37] rounded-full animate-spin"></div>
-                  <FileText size={32} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-slate-200 animate-pulse" />
-                </div>
-                <div className="text-center">
-                  <p className="text-xl font-bold text-[#002147] mb-2">프리미엄 데이터 생성 중... (-5,000P 차감)</p>
-                  <p className="text-sm text-slate-400">사건 번호, 물건 내역, 권리 관계를 동기화하고 리포트를 작성 중입니다.</p>
-                </div>
+          ) : searchResults.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+              {searchResults.map(item => (
+                <AuctionCard key={item.id} item={item} />
+              ))}
+            </div>
+          ) : hasSearched ? (
+            <div className="py-40 text-center border-2 border-dashed border-slate-100 rounded-[3rem]">
+              <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-300">
+                 <Search size={32} />
               </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                <div className="lg:col-span-2">
-                  {/* CRITICAL LEGAL WARNING */}
-                  <div className="mb-6 p-6 bg-rose-50 border border-rose-100 rounded-3xl flex gap-4 items-start shadow-sm">
-                    <ShieldAlert className="text-rose-600 shrink-0" size={24} />
-                    <div>
-                      <h4 className="font-bold text-rose-900 text-sm mb-1">경고: AI 분석 결과의 법적 효력 안내</h4>
-                      <p className="text-[11px] text-rose-700 leading-relaxed font-medium">
-                        본 AI 리포트는 외부 웹 데이터를 기반으로 요약된 정보입니다. <strong>법정 매각물건명세서</strong>와 실제 데이터가 다를 수 있으며, 오차로 인한 입찰 사고 시 JB 하우징은 법적 책임을 지지 않습니다. <strong>반드시 유료 정밀 권리분석 서비스를 통해 검증하십시오.</strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-white rounded-[2.5rem] p-12 border border-slate-200 shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-0 left-0 w-2 h-full bg-[#D4AF37]"></div>
-                    <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
-                      <div className="flex items-center gap-2 text-[10px] font-black text-[#D4AF37] uppercase tracking-widest">
-                        <Zap size={14} /> AI Analysis Content (Premium)
-                      </div>
-                      <button className="text-[10px] font-bold text-slate-300 hover:text-[#002147] transition flex items-center gap-1">
-                         PDF 저장 <RefreshCcw size={12} />
-                      </button>
-                    </div>
-                    <div className="text-slate-700 leading-relaxed whitespace-pre-wrap text-[15px] font-medium">
-                      {aiSummary}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-6">
-                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest px-2 flex items-center gap-2">
-                     <Globe size={14}/> Verified Data Sources
-                  </h3>
-                  {aiResults.map((result, idx) => (
-                    <a 
-                      key={idx} 
-                      href={result.uri} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="block bg-white p-6 rounded-3xl border border-slate-100 hover:border-[#D4AF37] hover:shadow-2xl transition-all group relative overflow-hidden"
-                    >
-                      <div className="relative z-10 flex items-start justify-between gap-4">
-                        <div className="flex-grow">
-                          <div className="text-[9px] font-bold text-[#D4AF37] mb-2 flex items-center gap-1 uppercase tracking-tighter">
-                            Official Court Database Link
-                          </div>
-                          <div className="font-bold text-[#002147] text-sm line-clamp-2 leading-snug">
-                            {result.title}
-                          </div>
-                          <div className="mt-3 text-[10px] text-slate-400 font-mono opacity-60">
-                            {result.uri}
-                          </div>
-                        </div>
-                        <div className="bg-slate-50 p-2 rounded-xl group-hover:bg-[#D4AF37] group-hover:text-white transition">
-                           <ExternalLink size={14} />
-                        </div>
-                      </div>
-                    </a>
-                  ))}
-                  
-                  <div className="p-8 bg-gradient-to-br from-[#002147] to-[#00152e] rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 blur-3xl rounded-full"></div>
-                    <h4 className="font-bold text-lg mb-3">전문가의 정밀 분석이 <br/>필요하신가요?</h4>
-                    <p className="text-[11px] opacity-60 mb-6 leading-relaxed">특수 권리(유치권, 법정지상권) 분석 및 명도 전략 수립을 위해 베테랑 매수신청대리인을 연결해 드립니다.</p>
-                    <button className="w-full bg-[#D4AF37] text-[#002147] py-4 rounded-2xl font-bold text-sm hover:bg-white transition-all shadow-lg">
-                      1:1 대면 상담 신청
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+              <h3 className="text-xl font-bold text-slate-600">검색 결과가 없습니다.</h3>
+              <p className="text-slate-400 text-sm mt-2">다른 검색어를 입력하거나 지역명을 상세하게 적어보세요.</p>
+              <button onClick={() => {setSearchQuery(''); setHasSearched(false);}} className="mt-8 text-[#D4AF37] font-bold hover:underline">초기화</button>
+            </div>
+          ) : (
+            <div className="py-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+               <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-[#D4AF37] mb-6"><Sparkles /></div>
+                  <h4 className="font-bold text-[#002147] mb-2">실시간 데이터</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">Gemini AI가 구글 검색을 통해 현재 진행 중인 실제 법원 경매 데이터를 즉시 수집합니다.</p>
+               </div>
+               <div className="p-8 bg-slate-50 rounded-[2rem] border border-slate-100 flex flex-col items-center text-center">
+                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-sm text-[#D4AF37] mb-6"><Search /></div>
+                  <h4 className="font-bold text-[#002147] mb-2">통합 검색</h4>
+                  <p className="text-xs text-slate-500 leading-relaxed">전국 아파트, 상가, 토지 등 모든 종류의 경매 물건을 키워드 하나로 검색할 수 있습니다.</p>
+               </div>
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Search Requirement State (Only show if not searched yet) */}
-      {!isSearching && !aiSummary && (
-        <div className="max-w-7xl mx-auto px-4 pt-16">
-          <div className="bg-slate-50 rounded-[3rem] p-12 border border-slate-100 flex flex-col items-center justify-center text-center">
-            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-[#D4AF37] shadow-sm mb-6">
-              <Lock size={28} />
-            </div>
-            <h3 className="text-xl font-bold text-[#002147] mb-2">프리미엄 통합 검색 안내</h3>
-            <p className="text-sm text-slate-500 max-w-lg leading-relaxed mb-8">
-              대법원 경매 데이터를 실시간으로 수집하고 AI로 정밀 분석하는 리포트 기능은 프리미엄 회원에게만 제공됩니다. 검색 시 5,000포인트가 차감되며, 물건의 권리 관계와 예상 입찰가 가이드를 포함한 리포트가 생성됩니다.
-            </p>
-            <div className="flex gap-4">
-              <button 
-                onClick={() => document.querySelector('input')?.focus()}
-                className="bg-[#002147] text-white px-8 py-3 rounded-2xl font-bold text-sm hover:scale-105 transition shadow-xl"
-              >
-                검색어 입력하기
+        {/* Sidebar: Bidding Resources */}
+        <div className="space-y-8">
+           <div className="bg-slate-50 rounded-3xl p-8 border border-slate-100">
+              <h3 className="text-lg font-bold text-[#002147] mb-6 flex items-center gap-2">
+                 <BookOpen className="text-[#D4AF37]" size={20} /> 입찰 필수 리소스
+              </h3>
+              <div className="space-y-4">
+                 {resourceLinks.map((res, i) => (
+                   <a 
+                     key={i} 
+                     href={res.url} 
+                     target="_blank" 
+                     rel="noreferrer" 
+                     className="block p-4 bg-white rounded-2xl border border-slate-100 hover:border-[#D4AF37] hover:shadow-md transition group"
+                   >
+                     <div className="flex items-center justify-between mb-1">
+                        <span className="font-bold text-sm text-slate-800 group-hover:text-[#D4AF37] transition">{res.title}</span>
+                        <ExternalLink size={12} className="text-slate-300 group-hover:text-[#D4AF37]" />
+                     </div>
+                     <p className="text-[10px] text-slate-400 leading-tight">{res.desc}</p>
+                   </a>
+                 ))}
+              </div>
+           </div>
+
+           <div className="bg-[#D4AF37]/5 rounded-3xl p-8 border border-[#D4AF37]/20">
+              <h3 className="text-lg font-bold text-[#002147] mb-4 flex items-center gap-2">
+                 <Gavel className="text-[#D4AF37]" size={20} /> 경매 절차 안내
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                 경매 입찰은 법령에 따른 엄격한 절차로 진행됩니다. 초보자라면 반드시 절차를 숙지하세요.
+              </p>
+              <button className="w-full py-3 bg-[#002147] text-white rounded-xl text-xs font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2">
+                 가이드북 다운로드 <LinkIcon size={14} />
               </button>
-              <Link to="/points" className="bg-white border border-slate-200 text-slate-600 px-8 py-3 rounded-2xl font-bold text-sm hover:bg-slate-50 transition">
-                포인트 충전
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main List Area */}
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="flex justify-between items-center mb-12">
-           <h2 className="text-3xl font-bold text-[#002147]">
-             {searchQuery ? (
-               <>추천 물건 검색 결과 <span className="text-[#D4AF37] font-serif">{filtered.length}</span></>
-             ) : (
-               <>실시간 추천 매물 <span className="text-[#D4AF37] font-serif">{filtered.length}</span></>
-             )}
-           </h2>
-           <div className="flex items-center gap-2 text-xs font-bold text-slate-400 bg-slate-50 px-4 py-2 rounded-full">
-             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-             실시간 업데이트 중
            </div>
         </div>
-
-        {viewType === 'list' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {filtered.map(item => (
-              <AuctionCard key={item.id} item={item} />
-            ))}
-          </div>
-        ) : (
-          <div className="bg-slate-50 rounded-[3rem] border border-slate-100 h-[650px] flex items-center justify-center text-slate-400 flex-col gap-6 shadow-inner relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
-               <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000" className="w-full h-full object-cover" alt="Map pattern" />
-            </div>
-            <div className="relative z-10 flex flex-col items-center">
-              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl text-[#002147] mb-4">
-                <MapIcon size={32} />
-              </div>
-              <p className="font-black text-2xl text-[#002147] mb-2 tracking-tight">지도 검색 모드 준비 중</p>
-              <p className="text-sm text-slate-500 max-w-xs text-center leading-relaxed">지역별 낙찰가 통계와 함께 지도를 기반으로 경매 물건을 한눈에 확인할 수 있는 기능이 곧 찾아옵니다.</p>
-              <button onClick={() => setViewType('list')} className="mt-8 bg-[#002147] text-white px-8 py-3 rounded-2xl font-bold text-sm hover:scale-105 transition shadow-xl">
-                리스트로 보기
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 12s linear infinite;
-        }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}} />
+      {/* Data Notice */}
+      <div className="max-w-7xl mx-auto px-4 pb-20">
+         <div className="bg-[#002147] rounded-3xl p-8 text-white/80 flex flex-col md:flex-row items-center justify-between gap-6 border border-white/10">
+            <div className="flex items-center gap-4">
+               <Info className="text-[#D4AF37] shrink-0" size={32} />
+               <div className="text-sm leading-relaxed">
+                  <strong>알림:</strong> 위 검색 결과는 AI가 수집한 정보로, 법정 공고와 실시간으로 일치하지 않을 수 있습니다. <br className="hidden md:block"/>
+                  정확한 입찰 참여를 위해서는 반드시 <strong>대법원 경매정보 홈페이지</strong>에서 재확인하시기 바랍니다.
+               </div>
+            </div>
+            <a href="https://www.courtauction.go.kr" target="_blank" rel="noreferrer" className="whitespace-nowrap bg-white/10 hover:bg-white/20 px-6 py-3 rounded-xl text-sm font-bold transition flex items-center gap-2">
+               대법원 공식 홈페이지 <ExternalLink size={14} />
+            </a>
+         </div>
+      </div>
     </div>
   );
 };

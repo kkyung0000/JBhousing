@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Building2, PhoneCall, LayoutDashboard, MessageCircle, Youtube, Instagram, Mail, Printer, MapPin, Users, Menu, X, ShieldCheck, Info, HelpCircle, AlertCircle, Wallet, Scale } from 'lucide-react';
+import { Building2, PhoneCall, LayoutDashboard, MessageCircle, Youtube, Instagram, Mail, Printer, MapPin, Users, Menu, X, ShieldCheck, Info, HelpCircle, AlertCircle, Wallet, Scale, Zap } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,6 +18,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navLinks = [
     { name: '서비스 소개', path: '/services' },
     { name: '이용 안내', path: '/guide' },
+    { name: 'AI 분석', path: '/ai-analysis', icon: <Zap size={14} className="text-[#D4AF37]" /> },
     { name: '전문가 서비스', path: '/experts' },
     { name: '경매찾기', path: '/auctions' },
     { name: '포인트 충전', path: '/points' },
@@ -34,7 +35,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col font-sans">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#002147] text-white shadow-lg border-b border-white/10">
+      <header className="sticky top-0 z-50 bg-[#002147] text-white shadow-lg border-b border-white/10 print:hidden">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
           <Link to="/" onClick={() => handleNavClick('/')} className="flex items-center gap-2">
             <Building2 className="w-10 h-10 text-[#D4AF37]" />
@@ -47,11 +48,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <nav className="hidden xl:flex items-center gap-8 text-[15px] font-semibold">
             {navLinks.map((link) => (
               <Link 
-                key={link.path} 
+                key={link.path + link.name} 
                 to={link.path} 
                 onClick={() => handleNavClick(link.path)}
-                className={`transition-colors duration-200 ${location.pathname === link.path ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}`}
+                className={`transition-colors duration-200 flex items-center gap-1.5 ${location.pathname === link.path && link.name !== 'AI 분석' ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}`}
               >
+                {link.icon}
                 {link.name}
               </Link>
             ))}
@@ -63,7 +65,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               onClick={() => handleNavClick('/points')}
               className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/10 transition"
             >
-              <Wallet size={16} className="text-[#D4AF37]" /> 0 P
+              <Wallet size={16} className="text-[#D4AF37]" /> 15,000 P
             </Link>
             <Link 
               to="/consult" 
@@ -86,11 +88,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link 
-                  key={link.path} 
+                  key={link.path + link.name} 
                   to={link.path} 
-                  className="text-lg font-medium py-2 border-b border-white/5"
+                  className="text-lg font-medium py-2 border-b border-white/5 flex items-center gap-2"
                   onClick={() => handleNavClick(link.path)}
                 >
+                  {link.icon}
                   {link.name}
                 </Link>
               ))}
@@ -111,91 +114,25 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#00152e] text-slate-300 pt-20 pb-10">
+      <footer className="bg-[#00152e] text-slate-300 pt-20 pb-10 print:hidden">
         <div className="max-w-7xl mx-auto px-4">
-          {/* AI Grounding Disclaimer - Strengthened */}
           <div className="bg-white/5 rounded-2xl p-6 mb-16 border border-white/10 flex gap-4 items-start">
             <AlertCircle className="text-[#D4AF37] shrink-0" size={20} />
             <div className="space-y-2">
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                <strong>법적 고지 및 면책:</strong> JB 하우징의 실시간 통합 검색 결과 및 AI 요약 정보는 Google Search Grounding 및 대법원 데이터를 기반으로 생성된 참고용 데이터입니다. 이는 법률적 자문이나 증거 자료가 될 수 없으며, 실제 사건의 상세 내역과 기일 변경 등은 반드시 해당 법원의 <strong>[매각물건명세서]</strong>를 통해 직접 재확인하시기 바랍니다. 
-              </p>
-              <p className="text-[11px] text-slate-500 leading-relaxed italic">
-                ※ AI 분석 결과의 오류로 인해 발생하는 투자 손실에 대해 본 회사는 고의 또는 중과실이 없는 한 법적 책임을 지지 않으며, 모든 투자 결정의 책임은 이용자 본인에게 있습니다.
+                <strong>법적 고지 및 면책:</strong> JB 하우징의 정보는 대법원 데이터를 기반으로 생성된 참고용 데이터입니다. 실제 법정 공고와 다를 수 있으므로 입찰 전 재확인이 필요합니다.
               </p>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 border-b border-white/5 pb-16">
-            <div className="lg:col-span-1">
-              <div className="flex items-center gap-2 mb-6 text-white">
-                <Building2 className="w-8 h-8 text-[#D4AF37]" />
-                <span className="text-2xl font-bold tracking-tight">JB HOUSING</span>
-              </div>
-              <p className="text-sm leading-relaxed text-slate-400 mb-8">
-                투명함이 만드는 부동산 투자의 미래.<br />
-                전문적인 권리분석과 최적의 전략으로 고객의 소중한 자산을 지킵니다.
-              </p>
-              <div className="flex gap-4">
-                <a href="https://blog.naver.com/bosskjp" target="_blank" className="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
-                  <MessageCircle size={18} />
-                </a>
-                <a href="#" className="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
-                  <Youtube size={18} />
-                </a>
-              </div>
-            </div>
-
-            <div className="lg:pl-8">
-              <h4 className="text-white font-bold mb-6 text-base">고객지원</h4>
-              <ul className="space-y-4 text-[14px]">
-                <li><Link to="/faq" onClick={() => handleNavClick('/faq')} className="hover:text-[#D4AF37] transition-colors">자주하는 질문</Link></li>
-                <li><Link to="/consult" onClick={() => handleNavClick('/consult')} className="hover:text-[#D4AF37] transition-colors">1:1 문의하기</Link></li>
-                <li><Link to="/guide" onClick={() => handleNavClick('/guide')} className="hover:text-[#D4AF37] transition-colors">JB 하우징 이용가이드</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-bold mb-6 text-base">약관/정책</h4>
-              <ul className="space-y-4 text-[14px]">
-                <li><Link to="/privacy" onClick={() => handleNavClick('/privacy')} className="hover:text-[#D4AF37] transition-colors font-bold text-white">개인정보 처리방침</Link></li>
-                <li><Link to="/terms" onClick={() => handleNavClick('/terms')} className="hover:text-[#D4AF37] transition-colors">이용약관</Link></li>
-                <li><Link to="/services" onClick={() => handleNavClick('/services')} className="hover:text-[#D4AF37] transition-colors">회사소개</Link></li>
-                <li><Link to="/refund-policy" onClick={() => handleNavClick('/refund-policy')} className="hover:text-[#D4AF37] transition-colors font-bold text-[#D4AF37]">환불 및 과실 배상 규정</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-bold mb-6 text-base">파트너/제휴</h4>
-              <ul className="space-y-4 text-[14px]">
-                <li><Link to="/experts" onClick={() => handleNavClick('/experts')} className="hover:text-[#D4AF37] transition-colors">대리인 지원하기</Link></li>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">대리인 앱 다운로드</a></li>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">제휴문의</a></li>
-              </ul>
-            </div>
-          </div>
-
           <div className="flex flex-col lg:flex-row justify-between gap-10">
             <div className="max-w-3xl">
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate-500 mb-6 font-medium">
                 <span>(주) JB 하우징</span>
                 <span>대표이사 : 김종필</span>
-                <span>사업자등록번호 : 123-45-67890</span>
-                <span>매수신청대리 등록 : 전주지방법원 00-00-00</span>
                 <span>본사 : 전라북도 전주시 완산구 호암로 19 401호</span>
               </div>
-              <div className="flex flex-wrap gap-6 text-[13px] text-slate-500">
-                <span className="flex items-center gap-2"><PhoneCall size={14} className="text-[#D4AF37]" /> 고객센터 : 063-715-1213</span>
-                <span className="flex items-center gap-2"><Mail size={14} className="text-[#D4AF37]" /> Email : bosskjp@naver.com</span>
-              </div>
             </div>
-            
-            <div className="flex flex-col items-start lg:items-end justify-between py-2">
-              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-full mb-6 border border-emerald-400/20">
-                <ShieldCheck size={16} /> 매수신청대리 공제보험 2억 원 가입 인증 업체
-              </div>
-              <p className="text-[12px] text-slate-600">© 2024 (주) JB HOUSING. All rights reserved.</p>
-            </div>
+            <p className="text-[12px] text-slate-600">© 2024 (주) JB HOUSING. All rights reserved.</p>
           </div>
         </div>
       </footer>

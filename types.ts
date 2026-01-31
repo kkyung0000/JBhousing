@@ -19,6 +19,7 @@ export interface AuctionItem {
   hasPriorityRight: boolean;
   expectedRepairCost: number;
   expectedEvictionCost: number;
+  externalUrl?: string; // 대법원 또는 정보 사이트 원본 링크
 }
 
 export interface PointPackage {
