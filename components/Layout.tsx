@@ -1,7 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Building2, PhoneCall, LayoutDashboard, MessageCircle, Youtube, Instagram, Mail, Printer, MapPin, Users, Menu, X, ShieldCheck, Info, HelpCircle } from 'lucide-react';
+import { Building2, PhoneCall, LayoutDashboard, MessageCircle, Youtube, Instagram, Mail, Printer, MapPin, Users, Menu, X, ShieldCheck, Info, HelpCircle, AlertCircle } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +10,11 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+
+  // 페이지 경로가 변경될 때마다 최상단으로 스크롤 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const navLinks = [
     { name: '서비스 소개', path: '/services' },
@@ -20,12 +25,21 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'FAQ', path: '/faq' },
   ];
 
+  // 메뉴 클릭 시 수행할 공통 함수
+  const handleNavClick = (path: string) => {
+    // 만약 현재 위치와 같은 곳을 눌렀을 경우를 위해 수동 스크롤
+    if (location.pathname === path) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen flex flex-col font-sans">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[#002147] text-white shadow-lg border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <Link to="/" onClick={() => handleNavClick('/')} className="flex items-center gap-2">
             <Building2 className="w-10 h-10 text-[#D4AF37]" />
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight leading-none">JB HOUSING</span>
@@ -38,6 +52,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link 
                 key={link.path} 
                 to={link.path} 
+                onClick={() => handleNavClick(link.path)}
                 className={`transition-colors duration-200 ${location.pathname === link.path ? 'text-[#D4AF37]' : 'hover:text-[#D4AF37]'}`}
               >
                 {link.name}
@@ -46,7 +61,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <Link to="/consult" className="hidden sm:block bg-[#D4AF37] text-[#002147] px-6 py-2.5 rounded-lg font-bold hover:bg-white transition-all text-sm shadow-lg shadow-amber-900/20">
+            <Link 
+              to="/consult" 
+              onClick={() => handleNavClick('/consult')}
+              className="hidden sm:block bg-[#D4AF37] text-[#002147] px-6 py-2.5 rounded-lg font-bold hover:bg-white transition-all text-sm shadow-lg shadow-amber-900/20"
+            >
               대리입찰 신청
             </Link>
             <button 
@@ -67,7 +86,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   key={link.path} 
                   to={link.path} 
                   className="text-lg font-medium py-2 border-b border-white/5"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => handleNavClick(link.path)}
                 >
                   {link.name}
                 </Link>
@@ -75,7 +94,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Link 
                 to="/consult" 
                 className="bg-[#D4AF37] text-white py-4 rounded-xl text-center font-bold mt-4"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={() => handleNavClick('/consult')}
               >
                 대리입찰 신청하기
               </Link>
@@ -92,6 +111,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Footer */}
       <footer className="bg-[#00152e] text-slate-300 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4">
+          {/* AI Grounding Disclaimer */}
+          <div className="bg-white/5 rounded-2xl p-6 mb-16 border border-white/10 flex gap-4 items-start">
+            <AlertCircle className="text-[#D4AF37] shrink-0" size={20} />
+            <p className="text-[11px] text-slate-400 leading-relaxed">
+              <strong>법적 고지 및 면책:</strong> JB 하우징의 실시간 통합 검색 결과 및 AI 요약 정보는 Google Search Grounding 및 대법원 데이터를 기반으로 생성된 참고용 데이터입니다. 실제 사건의 상세 내역과 기일 변경 등은 반드시 해당 법원 공고문을 통해 재확인하시기 바라며, AI 분석 결과로 인해 발생하는 직접적·간접적 손해에 대해 본 회사는 고의 또는 중과실이 없는 한 법적 책임을 지지 않습니다. 최종 입찰 결정은 전문가의 대면 상담 및 정밀 권리분석 리포트를 거치시기 바랍니다.
+            </p>
+          </div>
+
           {/* Main Footer Links */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 border-b border-white/5 pb-16">
             <div className="lg:col-span-1">
@@ -113,30 +140,29 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               </div>
             </div>
 
-            {/* Link Categories matching the requested image */}
             <div className="lg:pl-8">
               <h4 className="text-white font-bold mb-6 text-base">고객지원</h4>
               <ul className="space-y-4 text-[14px]">
-                <li><Link to="/faq" className="hover:text-[#D4AF37] transition-colors">자주하는 질문</Link></li>
-                <li><Link to="/consult" className="hover:text-[#D4AF37] transition-colors">1:1 문의하기</Link></li>
-                <li><Link to="/guide" className="hover:text-[#D4AF37] transition-colors">JB 하우징 이용가이드</Link></li>
+                <li><Link to="/faq" onClick={() => handleNavClick('/faq')} className="hover:text-[#D4AF37] transition-colors">자주하는 질문</Link></li>
+                <li><Link to="/consult" onClick={() => handleNavClick('/consult')} className="hover:text-[#D4AF37] transition-colors">1:1 문의하기</Link></li>
+                <li><Link to="/guide" onClick={() => handleNavClick('/guide')} className="hover:text-[#D4AF37] transition-colors">JB 하우징 이용가이드</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-bold mb-6 text-base">약관/정책</h4>
               <ul className="space-y-4 text-[14px]">
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors font-bold text-white">개인정보 처리방침</a></li>
-                <li><Link to="/terms" className="hover:text-[#D4AF37] transition-colors">이용약관</Link></li>
-                <li><Link to="/services" className="hover:text-[#D4AF37] transition-colors">회사소개</Link></li>
-                <li><Link to="/safety" className="hover:text-[#D4AF37] transition-colors">환불 및 과실 배상 규정</Link></li>
+                <li><Link to="/privacy" onClick={() => handleNavClick('/privacy')} className="hover:text-[#D4AF37] transition-colors font-bold text-white">개인정보 처리방침</Link></li>
+                <li><Link to="/terms" onClick={() => handleNavClick('/terms')} className="hover:text-[#D4AF37] transition-colors">이용약관</Link></li>
+                <li><Link to="/services" onClick={() => handleNavClick('/services')} className="hover:text-[#D4AF37] transition-colors">회사소개</Link></li>
+                <li><Link to="/safety" onClick={() => handleNavClick('/safety')} className="hover:text-[#D4AF37] transition-colors">환불 및 과실 배상 규정</Link></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-bold mb-6 text-base">파트너/제휴</h4>
               <ul className="space-y-4 text-[14px]">
-                <li><Link to="/experts" className="hover:text-[#D4AF37] transition-colors">대리인 지원하기</Link></li>
+                <li><Link to="/experts" onClick={() => handleNavClick('/experts')} className="hover:text-[#D4AF37] transition-colors">대리인 지원하기</Link></li>
                 <li><a href="#" className="hover:text-[#D4AF37] transition-colors">대리인 앱 다운로드</a></li>
                 <li><a href="#" className="hover:text-[#D4AF37] transition-colors">제휴문의</a></li>
               </ul>

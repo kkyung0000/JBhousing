@@ -1,11 +1,10 @@
 
 import React from 'react';
-import { FileText, ShieldCheck, Scale } from 'lucide-react';
+import { ShieldCheck, Scale, AlertTriangle } from 'lucide-react';
 
 export const TermsOfService: React.FC = () => {
   return (
     <div className="bg-white min-h-screen pb-20">
-      {/* Header */}
       <section className="bg-slate-50 py-16 border-b border-slate-100">
         <div className="max-w-4xl mx-auto px-4">
           <div className="flex items-center gap-3 text-[#D4AF37] mb-4 font-bold uppercase tracking-widest text-xs">
@@ -18,8 +17,14 @@ export const TermsOfService: React.FC = () => {
         </div>
       </section>
 
-      {/* Content */}
       <section className="max-w-4xl mx-auto px-4 py-16">
+        <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100 mb-12 flex gap-4">
+          <AlertTriangle className="text-amber-600 shrink-0" size={24} />
+          <p className="text-sm text-amber-800 leading-relaxed">
+            본 서비스는 「공인중개사법」 및 「매수신청대리인 등록 규칙」을 준수합니다. 모든 권리분석 리포트 및 입찰 상담은 법률적 근거를 바탕으로 제공되나, 최종 입찰 결정에 따른 투자 책임은 이용자 본인에게 있습니다.
+          </p>
+        </div>
+
         <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-10">
           
           <div>
@@ -28,7 +33,7 @@ export const TermsOfService: React.FC = () => {
               제1조 (목적)
             </h2>
             <p className="pl-10">
-              본 약관은 (주) JB 하우징(이하 "회사")이 운영하는 홈페이지를 통해 제공하는 부동산 경매 물건 정보 제공 및 매수신청대리 서비스를 이용함에 있어, "회사"와 "이용자"의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
+              본 약관은 (주) JB 하우징(이하 "회사")이 운영하는 홈페이지(jbhousing2.netlify.app)를 통해 제공하는 부동산 경매 물건 정보 제공 및 매수신청대리 서비스(이하 "서비스")를 이용함에 있어, "회사"와 "이용자"의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
             </p>
           </div>
 
@@ -49,7 +54,7 @@ export const TermsOfService: React.FC = () => {
               제3조 (대행 수수료 및 비용)
             </h2>
             <div className="pl-10 space-y-3">
-              <p>이용자는 「공인중개사법」 및 「매수신청대리인 등록 규칙」에 정해진 수수료를 지불해야 합니다.</p>
+              <p>이용자는 「공인중개사법」 및 「매수신청대리인 등록 규칙」에 정해진 수수료를 지불해야 합니다. <strong>(모든 수수료는 부가세 별도입니다)</strong></p>
               <ul className="list-disc pl-5 space-y-1">
                 <li>상담 및 권리분석 수수료: 50만 원 범위 내 (협의)</li>
                 <li>매수신청대리 수수료: 낙찰 시 감정가의 1% 또는 낙찰가의 1.5% 범위 내 (협의), 미낙찰 시 5만 원 범위 내</li>

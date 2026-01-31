@@ -14,7 +14,11 @@ export const mockAuctions: AuctionItem[] = [
     auctionDate: '2024-06-20',
     imageUrl: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop',
     riskLevel: 'safe',
-    description: '강남 중심부 프리미엄 아파트 입지. 명도 난이도 하. 실거주 및 투자 가치 매우 높음.'
+    description: '강남 중심부 프리미엄 아파트 입지. 명도 난이도 하. 실거주 및 투자 가치 매우 높음.',
+    isOccupiedByOwner: true,
+    hasPriorityRight: false,
+    expectedRepairCost: 15000000,
+    expectedEvictionCost: 5000000
   },
   {
     id: '2',
@@ -28,7 +32,11 @@ export const mockAuctions: AuctionItem[] = [
     auctionDate: '2024-07-05',
     imageUrl: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop',
     riskLevel: 'caution',
-    description: '한강 조망권 최상위 아파트. 대항력 있는 임차인 존재 확인 필요.'
+    description: '한강 조망권 최상위 아파트. 대항력 있는 임차인 존재 확인 필요.',
+    isOccupiedByOwner: false,
+    hasPriorityRight: true,
+    expectedRepairCost: 20000000,
+    expectedEvictionCost: 10000000
   }
 ];
 
