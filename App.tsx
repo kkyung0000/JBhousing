@@ -1,0 +1,31 @@
+
+import React from 'react';
+import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { AuctionList } from './pages/AuctionList';
+import { AuctionDetail } from './pages/AuctionDetail';
+import { AdminDashboard } from './pages/AdminDashboard';
+import { Consultation } from './pages/Consultation';
+import { ServiceIntro } from './pages/ServiceIntro';
+import { ExpertList } from './pages/ExpertList';
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<ServiceIntro />} />
+          <Route path="/experts" element={<ExpertList />} />
+          <Route path="/auctions" element={<AuctionList />} />
+          <Route path="/auctions/:id" element={<AuctionDetail />} />
+          <Route path="/consult" element={<Consultation />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+};
+
+export default App;
