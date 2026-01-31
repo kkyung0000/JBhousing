@@ -13,7 +13,7 @@ export const FAQPage: React.FC = () => {
     : mockFAQs.filter(f => f.category === selectedCategory);
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-20">
       <section className="bg-[#002147] py-20 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold mb-4 font-serif">자주 묻는 질문</h1>
@@ -22,7 +22,7 @@ export const FAQPage: React.FC = () => {
       </section>
 
       <div className="max-w-4xl mx-auto px-4 -mt-10">
-        <div className="bg-white rounded-3xl shadow-xl p-4 mb-8 flex items-center gap-4">
+        <div className="bg-white rounded-3xl shadow-xl p-4 mb-8 flex items-center gap-4 border border-slate-100">
            <Search size={20} className="text-slate-400 ml-4" />
            <input type="text" placeholder="검색어를 입력하세요" className="flex-grow py-4 focus:outline-none text-lg" />
         </div>
@@ -35,7 +35,7 @@ export const FAQPage: React.FC = () => {
                className={`px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap transition border ${
                  selectedCategory === cat 
                  ? 'bg-[#D4AF37] text-white border-[#D4AF37]' 
-                 : 'bg-white text-slate-500 border-slate-200 hover:border-slate-300 shadow-sm'
+                 : 'bg-white text-slate-500 border-slate-100 hover:border-slate-200 shadow-sm'
                }`}
              >
                {cat}
@@ -75,7 +75,7 @@ export const FAQPage: React.FC = () => {
            <p className="text-slate-500 mb-8">전문 상담사가 1:1로 친절하게 안내해 드립니다.</p>
            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="tel:01027873456" className="bg-[#002147] text-white px-8 py-4 rounded-xl font-bold">전화 상담하기</a>
-              <button className="border border-slate-200 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition">1:1 문의 남기기</button>
+              <button className="border border-slate-100 text-slate-600 px-8 py-4 rounded-xl font-bold hover:bg-slate-50 transition">1:1 문의 남기기</button>
            </div>
         </div>
       </div>

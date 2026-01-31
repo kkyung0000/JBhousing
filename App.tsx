@@ -12,6 +12,7 @@ import { ExpertList } from './pages/ExpertList';
 import { UsageGuide } from './pages/UsageGuide';
 import { SafetySystem } from './pages/SafetySystem';
 import { FAQPage } from './pages/FAQPage';
+import { TermsOfService } from './pages/TermsOfService';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const App: React.FC = () => {
           <Route path="/experts" element={<ExpertList />} />
           <Route path="/safety" element={<SafetySystem />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/terms" element={<TermsOfService />} />
           <Route path="/auctions" element={<AuctionList />} />
           <Route path="/auctions/:id" element={<AuctionDetail />} />
           <Route path="/consult" element={<Consultation />} />

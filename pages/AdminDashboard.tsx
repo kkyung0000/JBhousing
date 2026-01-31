@@ -5,8 +5,7 @@ import { Plus, Edit2, Trash2, TrendingUp, Users, FileText, CheckCircle } from 'l
 
 export const AdminDashboard: React.FC = () => {
   return (
-    <div className="bg-slate-50 min-h-screen">
-      {/* Sidebar-less layout for SPA simplicity */}
+    <div className="bg-white min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-3xl font-bold text-[#002147]">Admin Dashboard</h1>

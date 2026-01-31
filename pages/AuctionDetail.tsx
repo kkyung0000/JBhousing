@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { mockAuctions } from '../data/mockData';
-/* Added ShieldCheck to the import list */
 import { MapPin, Calendar, CheckCircle2, AlertCircle, Info, Calculator, Download, Share2, Phone, Zap, Star, ShieldCheck } from 'lucide-react';
 
 export const AuctionDetail: React.FC = () => {
@@ -14,7 +13,7 @@ export const AuctionDetail: React.FC = () => {
 
   if (!auction) {
     return (
-      <div className="py-20 text-center">
+      <div className="py-20 text-center bg-white min-h-screen">
         <h2 className="text-2xl font-bold">물건을 찾을 수 없습니다.</h2>
         <button onClick={() => navigate('/auctions')} className="mt-4 text-[#002147] underline">목록으로 돌아가기</button>
       </div>
@@ -25,9 +24,9 @@ export const AuctionDetail: React.FC = () => {
   const formatKRW = (val: number) => (val / 100000000).toFixed(2) + '억원';
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-20">
       {/* Header Info */}
-      <div className="bg-white border-b border-slate-200 pt-10 pb-8">
+      <div className="bg-white border-b border-slate-100 pt-10 pb-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-start gap-6">
             <div className="space-y-4">
@@ -42,8 +41,8 @@ export const AuctionDetail: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <button className="flex-grow md:flex-grow-0 p-3 border border-slate-200 rounded-xl hover:bg-slate-50 transition flex justify-center"><Share2 size={20}/></button>
-              <button className="flex-grow md:flex-grow-0 bg-[#002147] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2 shadow-lg shadow-slate-200">
+              <button className="flex-grow md:flex-grow-0 p-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition flex justify-center"><Share2 size={20}/></button>
+              <button className="flex-grow md:flex-grow-0 bg-[#002147] text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-900 transition flex items-center justify-center gap-2 shadow-lg shadow-slate-100">
                 <Phone size={18} /> 실시간 유선 상담
               </button>
             </div>
@@ -70,7 +69,7 @@ export const AuctionDetail: React.FC = () => {
           </div>
 
           {/* Smart Score Panel */}
-          <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-3 gap-8">
              <div className="text-center md:border-r border-slate-100 pr-8">
                 <div className="text-xs font-bold text-slate-400 mb-2 uppercase tracking-widest">투자 매력도</div>
                 <div className="flex items-center justify-center gap-1 text-[#D4AF37] mb-2">
@@ -96,7 +95,7 @@ export const AuctionDetail: React.FC = () => {
           </div>
 
           {/* Details Table */}
-          <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm space-y-8">
+          <div className="bg-white rounded-2xl p-8 border border-slate-100 shadow-sm space-y-8">
              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="space-y-1">
                   <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">감정가</div>
@@ -132,16 +131,13 @@ export const AuctionDetail: React.FC = () => {
                     <span className="text-emerald-800 flex items-center gap-1 font-bold text-sm uppercase tracking-widest">SAFE TO BID</span>
                   </div>
                </div>
-               <p className="mt-8 text-slate-600 leading-relaxed text-sm">
-                 {auction.description} 전주 지역 부동산 가치 상승이 예상되는 입지로 실거주와 투자 목적을 동시에 만족시킬 수 있는 물건입니다.
-               </p>
              </div>
           </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl sticky top-24">
+          <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-xl sticky top-28">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><Calculator size={20} className="text-[#D4AF37]"/> 수익률 시뮬레이션</h3>
             
             <div className="space-y-6 mb-8">
@@ -172,7 +168,7 @@ export const AuctionDetail: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-[#002147] rounded-2xl p-6 text-white mb-8 shadow-inner">
+            <div className="bg-[#002147] rounded-2xl p-6 text-white mb-8 shadow-md">
               <div className="text-[10px] opacity-50 mb-2 uppercase tracking-widest font-bold">예상 연 수익률 (세전)</div>
               <div className="text-4xl font-bold text-[#D4AF37]">{roi}%</div>
             </div>

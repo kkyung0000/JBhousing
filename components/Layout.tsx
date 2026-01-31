@@ -90,58 +90,81 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#00152e] text-slate-400 pt-20 pb-10">
+      <footer className="bg-[#00152e] text-slate-300 pt-20 pb-10">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-            <div className="lg:col-span-2">
+          {/* Main Footer Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 border-b border-white/5 pb-16">
+            <div className="lg:col-span-1">
               <div className="flex items-center gap-2 mb-6 text-white">
                 <Building2 className="w-8 h-8 text-[#D4AF37]" />
-                <span className="text-2xl font-bold tracking-tight">(주) JB 하우징</span>
+                <span className="text-2xl font-bold tracking-tight">JB HOUSING</span>
               </div>
-              <p className="mb-8 leading-relaxed max-w-md">
-                "투명함이 만드는 부동산 투자의 미래"<br />
-                JB 하우징은 전주 본사를 중심으로 전국 법원 경매 전문가 네트워크를 통해 가장 안전한 입찰 경험을 제공합니다.
+              <p className="text-sm leading-relaxed text-slate-400 mb-8">
+                투명함이 만드는 부동산 투자의 미래.<br />
+                전문적인 권리분석과 최적의 전략으로 고객의 소중한 자산을 지킵니다.
               </p>
               <div className="flex gap-4">
-                <a href="https://blog.naver.com/bosskjp" target="_blank" className="w-12 h-12 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
-                  <MessageCircle size={22} />
+                <a href="https://blog.naver.com/bosskjp" target="_blank" className="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
+                  <MessageCircle size={18} />
                 </a>
-                <a href="#" className="w-12 h-12 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
-                  <Youtube size={22} />
+                <a href="#" className="w-10 h-10 bg-white/5 flex items-center justify-center rounded-full hover:bg-[#D4AF37] hover:text-white transition-all">
+                  <Youtube size={18} />
                 </a>
               </div>
             </div>
-            
-            <div>
-              <h4 className="text-white font-bold mb-6 flex items-center gap-2 underline underline-offset-8 decoration-[#D4AF37]">고객 지원</h4>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-3 text-sm"><PhoneCall size={16} className="text-[#D4AF37]" /> 063-715-1213</li>
-                <li className="flex items-center gap-3 text-sm font-bold text-white"><Smartphone size={16} className="text-[#D4AF37]" /> 010-2787-3456</li>
-                <li className="flex items-center gap-3 text-sm"><Mail size={16} className="text-[#D4AF37]" /> bosskjp@naver.com</li>
-                <li className="flex items-center gap-3 text-sm"><HelpCircle size={16} className="text-[#D4AF37]" /> <Link to="/faq">자주 묻는 질문</Link></li>
+
+            {/* Link Categories matching the requested image */}
+            <div className="lg:pl-8">
+              <h4 className="text-white font-bold mb-6 text-base">고객지원</h4>
+              <ul className="space-y-4 text-[14px]">
+                <li><Link to="/faq" className="hover:text-[#D4AF37] transition-colors">자주하는 질문</Link></li>
+                <li><Link to="/consult" className="hover:text-[#D4AF37] transition-colors">1:1 문의하기</Link></li>
+                <li><Link to="/guide" className="hover:text-[#D4AF37] transition-colors">JB 하우징 이용가이드</Link></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-white font-bold mb-6 flex items-center gap-2 underline underline-offset-8 decoration-[#D4AF37]">기업 정보</h4>
-              <p className="text-sm leading-7">
-                대표이사: 김종필<br />
-                사업자등록번호: 000-00-00000<br />
-                매수신청대리 등록: 전주지방법원 00-00-00<br />
-                본사: 전북 전주시 완산구 호암로 19 401호
-              </p>
-              <div className="mt-6 flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-full w-fit">
-                <ShieldCheck size={14} /> 공제보험 2억 원 가입 업체
-              </div>
+              <h4 className="text-white font-bold mb-6 text-base">약관/정책</h4>
+              <ul className="space-y-4 text-[14px]">
+                <li><a href="#" className="hover:text-[#D4AF37] transition-colors font-bold text-white">개인정보 처리방침</a></li>
+                <li><Link to="/terms" className="hover:text-[#D4AF37] transition-colors">이용약관</Link></li>
+                <li><Link to="/services" className="hover:text-[#D4AF37] transition-colors">회사소개</Link></li>
+                <li><Link to="/safety" className="hover:text-[#D4AF37] transition-colors">환불 및 과실 배상 규정</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-6 text-base">파트너/제휴</h4>
+              <ul className="space-y-4 text-[14px]">
+                <li><Link to="/experts" className="hover:text-[#D4AF37] transition-colors">대리인 지원하기</Link></li>
+                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">대리인 앱 다운로드</a></li>
+                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">제휴문의</a></li>
+              </ul>
             </div>
           </div>
-          
-          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between text-xs opacity-50 font-medium">
-            <p>© 2024 (주) JB HOUSING. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <a href="#" className="hover:text-white">이용약관</a>
-              <a href="#" className="hover:text-white">개인정보처리방침</a>
-              <a href="#" className="hover:text-white">윤리강령</a>
+
+          {/* Business Info & Copyright */}
+          <div className="flex flex-col lg:flex-row justify-between gap-10">
+            <div className="max-w-3xl">
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-[13px] text-slate-500 mb-6 font-medium">
+                <span>(주) JB 하우징</span>
+                <span>대표이사 : 김종필</span>
+                <span>사업자등록번호 : 123-45-67890</span>
+                <span>매수신청대리 등록 : 전주지방법원 00-00-00</span>
+                <span>본사 : 전라북도 전주시 완산구 호암로 19 401호</span>
+              </div>
+              <div className="flex flex-wrap gap-6 text-[13px] text-slate-500">
+                <span className="flex items-center gap-2"><PhoneCall size={14} className="text-[#D4AF37]" /> 고객센터 : 063-715-1213</span>
+                <span className="flex items-center gap-2"><Smartphone size={14} className="text-[#D4AF37]" /> 직통문의 : 010-2787-3456</span>
+                <span className="flex items-center gap-2"><Mail size={14} className="text-[#D4AF37]" /> Email : bosskjp@naver.com</span>
+              </div>
+            </div>
+            
+            <div className="flex flex-col items-start lg:items-end justify-between py-2">
+              <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-4 py-2 rounded-full mb-6">
+                <ShieldCheck size={16} /> 공제보험 2억 원 가입 인증 업체
+              </div>
+              <p className="text-[12px] text-slate-600">© 2024 (주) JB HOUSING. All rights reserved.</p>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ export const Consultation: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-50 py-20 min-h-screen">
+    <div className="bg-white py-20 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         <div>
           <div className="inline-flex items-center gap-2 bg-[#D4AF37]/10 text-[#D4AF37] px-3 py-1 rounded-full text-xs font-bold mb-6">
@@ -24,7 +24,7 @@ export const Consultation: React.FC = () => {
             (주) JB 하우징의 김종필 대표가 풍부한 실전 경험을 바탕으로 안전하고 확실한 투자 길잡이가 되어 드립니다.
           </p>
 
-          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200 mb-10">
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-10">
              <div className="flex items-center gap-2 text-rose-600 font-bold text-sm mb-4">
                 <AlertCircle size={18} /> 반드시 확인해주세요!
              </div>
@@ -37,7 +37,7 @@ export const Consultation: React.FC = () => {
           
           <div className="space-y-8">
             <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 bg-white flex items-center justify-center rounded-2xl shadow-sm text-[#D4AF37] border border-slate-100">
+              <div className="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-2xl shadow-sm text-[#D4AF37] border border-slate-100">
                 <Smartphone size={20} />
               </div>
               <div>
@@ -46,7 +46,7 @@ export const Consultation: React.FC = () => {
               </div>
             </div>
             <div className="flex gap-6 items-start">
-              <div className="w-12 h-12 bg-white flex items-center justify-center rounded-2xl shadow-sm text-[#D4AF37] border border-slate-100">
+              <div className="w-12 h-12 bg-slate-50 flex items-center justify-center rounded-2xl shadow-sm text-[#D4AF37] border border-slate-100">
                 <ShieldCheck />
               </div>
               <div>
