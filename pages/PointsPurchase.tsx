@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { pointPackages } from '../data/mockData';
 import { PointPackage } from '../types';
-import { CreditCard, Zap, CheckCircle2, ChevronRight, Wallet, BadgePercent, ShieldCheck, AlertCircle, Sparkles, X, Loader2, Trophy, ArrowRight, Smartphone, Building, ReceiptText } from 'lucide-react';
+import { CreditCard, Zap, CheckCircle2, ChevronRight, Wallet, BadgePercent, ShieldCheck, X, Loader2, Trophy, ArrowRight, Smartphone, Building, ReceiptText, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export const PointsPurchase: React.FC = () => {
@@ -11,6 +11,7 @@ export const PointsPurchase: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [finalPoints, setFinalPoints] = useState<number>(0);
 
   const handleStartPayment = () => {
     if (!selectedPackage) return;
@@ -18,12 +19,24 @@ export const PointsPurchase: React.FC = () => {
   };
 
   const executePayment = () => {
+    if (!selectedPackage) return;
     setShowCheckout(false);
     setIsProcessing(true);
     
     // 결제 프로세스 시뮬레이션 (2.5초)
     setTimeout(() => {
       setIsProcessing(false);
+      
+      const currentPoints = parseInt(localStorage.getItem('jb_user_points') || '15000', 10);
+      const addedPoints = selectedPackage.points + selectedPackage.bonusPoints;
+      const newTotal = currentPoints + addedPoints;
+      
+      localStorage.setItem('jb_user_points', newTotal.toString());
+      setFinalPoints(newTotal);
+      
+      // 헤더 업데이트 알림
+      window.dispatchEvent(new Event('jb_points_updated'));
+      
       setIsSuccess(true);
     }, 2500);
   };
@@ -65,7 +78,7 @@ export const PointsPurchase: React.FC = () => {
              </div>
              <div className="pt-4 border-t border-slate-200 flex justify-between items-center">
                 <span className="font-black text-[#002147]">최종 보유 포인트</span>
-                <span className="text-2xl font-black text-[#D4AF37]">{(15000 + selectedPackage.points + selectedPackage.bonusPoints).toLocaleString()} P</span>
+                <span className="text-2xl font-black text-[#D4AF37]">{finalPoints.toLocaleString()} P</span>
              </div>
           </div>
 
@@ -151,7 +164,6 @@ export const PointsPurchase: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 -mt-32 grid grid-cols-1 lg:grid-cols-3 gap-12 relative z-20">
-        {/* Left: Package Selection */}
         <div className="lg:col-span-2 space-y-12">
           <div className="bg-white/80 backdrop-blur-2xl rounded-[3.5rem] p-10 shadow-2xl border border-white/50">
             <div className="flex items-center justify-between mb-10">
@@ -205,14 +217,12 @@ export const PointsPurchase: React.FC = () => {
                     <div className="text-2xl font-black text-[#002147]">{pkg.price.toLocaleString()}원</div>
                   </div>
 
-                  {/* Decorative background circle */}
                   <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full transition-all duration-500 opacity-5 ${selectedPackage?.id === pkg.id ? 'bg-[#D4AF37] scale-150' : 'bg-slate-200'}`}></div>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Payment Method Section */}
           <div className="bg-white/80 backdrop-blur-2xl rounded-[3.5rem] p-10 shadow-2xl border border-white/50">
             <h2 className="text-2xl font-black text-[#002147] mb-10 flex items-center gap-3">
               <CreditCard className="text-[#D4AF37]" size={28} /> 결제 수단 선택
@@ -238,16 +248,11 @@ export const PointsPurchase: React.FC = () => {
                 </button>
               ))}
             </div>
-            <div className="mt-10 p-8 bg-slate-50/50 rounded-3xl text-xs text-slate-400 leading-relaxed font-medium border border-slate-100 italic">
-              결제 완료 즉시 포인트가 지급되며 [마이페이지 > 포인트 내역]에서 실시간으로 확인하실 수 있습니다. 무통장 입금의 경우 평일 09:00~18:00 사이에 승인 처리가 완료됩니다.
-            </div>
           </div>
         </div>
 
-        {/* Right Sidebar: Unified Sticky Container */}
         <div className="relative">
           <div className="sticky top-28 space-y-6">
-            {/* Order Summary Card */}
             <div className="bg-white rounded-[3.5rem] p-10 border border-slate-100 shadow-2xl">
               <div className="flex items-center gap-3 mb-10 pb-6 border-b border-slate-50">
                  <ReceiptText className="text-[#D4AF37]" size={24} />
@@ -266,10 +271,6 @@ export const PointsPurchase: React.FC = () => {
                 <div className="flex justify-between items-center text-emerald-500">
                   <span className="font-black text-sm">보너스 혜택</span>
                   <span className="font-black">+{selectedPackage?.bonusPoints.toLocaleString()} P</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-400 font-bold text-sm">결제 방식</span>
-                  <span className="font-black text-[#002147] uppercase tracking-tighter">{paymentMethod === 'card' ? 'CREDIT CARD' : paymentMethod + ' PAY'}</span>
                 </div>
                 
                 <div className="pt-8 border-t border-slate-100">
@@ -290,19 +291,9 @@ export const PointsPurchase: React.FC = () => {
                 >
                   결제 서비스 연결 <ChevronRight size={24} className="group-hover:translate-x-1 transition" />
                 </button>
-                
-                <div className="space-y-3 pt-6 border-t border-slate-50">
-                  <div className="flex items-center gap-2 text-[11px] text-slate-400 font-bold justify-center">
-                    <ShieldCheck size={16} className="text-emerald-500" /> PCI-DSS 보안 표준 준수 결제
-                  </div>
-                  <div className="flex items-center gap-2 text-[10px] text-slate-300 font-medium justify-center text-center leading-tight">
-                     본 결제는 에스크로 서비스를 제공합니다. <br/> 사용 전 100% 환불 보증이 가능합니다.
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Promotional Card (Now inside the same sticky wrapper) */}
             <div className="bg-[#002147] rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 blur-3xl rounded-full group-hover:scale-150 transition-all duration-700"></div>
               <h4 className="font-black text-lg mb-6 flex items-center gap-2 relative z-10">
@@ -312,14 +303,6 @@ export const PointsPurchase: React.FC = () => {
                 <li className="flex gap-4">
                   <div className="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center shrink-0"><Zap size={14} className="text-[#D4AF37]" /></div>
                   <p className="text-xs opacity-70 leading-relaxed font-medium">프리미엄 AI 리포트 분석 비용 <br/> <strong className="text-white">최대 30% 절감 효과</strong></p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center shrink-0"><ShieldCheck size={14} className="text-[#D4AF37]" /></div>
-                  <p className="text-xs opacity-70 leading-relaxed font-medium">입찰 대행 신청 시 <br/> <strong className="text-white">최우선 전문가 배정권 부여</strong></p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center shrink-0"><Building size={14} className="text-[#D4AF37]" /></div>
-                  <p className="text-xs opacity-70 leading-relaxed font-medium">유료 회원 전용 <br/> <strong className="text-white">특수 물건(유치권 등) 매물 공개</strong></p>
                 </li>
               </ul>
             </div>

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Building2, PhoneCall, LayoutDashboard, MessageCircle, Youtube, Instagram, Mail, Printer, MapPin, Users, Menu, X, ShieldCheck, Info, HelpCircle, AlertCircle, Wallet, Scale, Zap, ChevronRight, Smartphone, Handshake, UserPlus, LogIn } from 'lucide-react';
+import { Building2, Menu, X, Wallet, Zap, UserPlus, LogIn, ChevronRight } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,7 +9,28 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [points, setPoints] = useState<number>(15000);
   const location = useLocation();
+
+  // 포인트 로컬 스토리지 동기화 및 업데이트 감지
+  useEffect(() => {
+    const savedPoints = localStorage.getItem('jb_user_points');
+    if (savedPoints) {
+      setPoints(parseInt(savedPoints, 10));
+    } else {
+      localStorage.setItem('jb_user_points', '15000');
+    }
+
+    const handlePointsUpdate = () => {
+      const updatedPoints = localStorage.getItem('jb_user_points');
+      if (updatedPoints) {
+        setPoints(parseInt(updatedPoints, 10));
+      }
+    };
+
+    window.addEventListener('jb_points_updated', handlePointsUpdate);
+    return () => window.removeEventListener('jb_points_updated', handlePointsUpdate);
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -40,7 +61,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link to="/" onClick={() => handleNavClick('/')} className="flex items-center gap-2 shrink-0">
             <Building2 className="w-10 h-10 text-[#D4AF37]" />
             <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-tight leading-none whitespace-nowrap">JB HOUSING</span>
+              <span className="text-xl font-bold tracking-tight leading-none whitespace-nowrap uppercase">JB HOUSING</span>
               <span className="text-[10px] opacity-70 tracking-widest mt-1 uppercase whitespace-nowrap">Court Auction Proxy</span>
             </div>
           </Link>
@@ -60,7 +81,6 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
           </nav>
 
           <div className="flex items-center gap-4 shrink-0">
-            {/* Login / Signup Buttons */}
             <div className="hidden lg:flex items-center gap-4 mr-2">
               <Link to="/signup" onClick={() => handleNavClick('/signup')} className="text-sm font-bold text-white/70 hover:text-[#D4AF37] transition flex items-center gap-1.5 whitespace-nowrap">
                 <UserPlus size={16} /> 회원가입
@@ -76,7 +96,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
               onClick={() => handleNavClick('/points')}
               className="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/10 transition whitespace-nowrap"
             >
-              <Wallet size={16} className="text-[#D4AF37]" /> 15,000 P
+              <Wallet size={16} className="text-[#D4AF37]" /> {points.toLocaleString()} P
             </Link>
             <Link 
               to="/consult" 
@@ -112,6 +132,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                   {link.name}
                 </Link>
               ))}
+              <div className="bg-white/5 rounded-xl p-4 flex justify-between items-center">
+                <span className="text-slate-400 font-bold">내 포인트</span>
+                <span className="text-[#D4AF37] font-black">{points.toLocaleString()} P</span>
+              </div>
               <Link 
                 to="/consult" 
                 className="bg-[#D4AF37] text-white py-4 rounded-xl text-center font-bold mt-4"
@@ -134,7 +158,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="lg:col-span-1 space-y-6">
               <Link to="/" className="flex items-center gap-2">
                 <Building2 className="w-8 h-8 text-[#D4AF37]" />
-                <span className="text-xl font-bold text-white tracking-tight">JB HOUSING</span>
+                <span className="text-xl font-bold text-white tracking-tight uppercase">JB HOUSING</span>
               </Link>
               <p className="text-sm text-slate-400 leading-relaxed">
                 대한민국 법원경매 매수신청대리 정식 등록업체로서 의뢰인의 자산을 보호하고 최상의 낙찰 전략을 제공합니다.
