@@ -1,155 +1,125 @@
 
 import React from 'react';
-import { ShieldCheck, RefreshCcw, Scale, AlertCircle, CheckCircle2, FileWarning, Landmark, Gavel, XCircle } from 'lucide-react';
+import { RefreshCcw, ShieldCheck, AlertCircle, XCircle, CheckCircle2, Scale, Landmark, Gavel, Coins } from 'lucide-react';
 
 export const RefundPolicy: React.FC = () => {
   return (
     <div className="bg-white min-h-screen pb-20">
-      {/* Header Section */}
-      <section className="bg-[#002147] py-20 text-white relative overflow-hidden">
+      <section className="bg-[#002147] py-24 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] rounded-full"></div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 bg-[#D4AF37] px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase text-[#002147] mb-6">
-            Legal & Compliance
+        <div className="max-w-4xl mx-auto px-4 relative z-10">
+          <div className="flex items-center gap-3 text-[#D4AF37] mb-6 font-black uppercase tracking-widest text-xs">
+            <RefreshCcw size={16} /> Refund & Liability
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 font-serif">환불 및 과실 배상 규정</h1>
-          <p className="text-lg opacity-70 max-w-2xl mx-auto leading-relaxed font-light">
-            JB 하우징은 관련 법령을 준수하며, 서비스 남용 방지와 <br className="hidden md:block"/>
-            책임 있는 대리 업무 수행을 위해 엄격한 환불 정책을 시행합니다.
-          </p>
+          <h1 className="text-4xl md:text-5xl font-black mb-6 font-serif leading-tight">
+            환불 및 과실배상 규정
+          </h1>
+          <p className="text-lg opacity-60 font-medium">JB 하우징은 투명한 환불 정책과 책임 있는 과실 배상으로 신뢰를 쌓습니다.</p>
         </div>
       </section>
 
       <section className="max-w-4xl mx-auto px-4 py-16">
-        <div className="space-y-16">
-          
-          {/* Section 1: Tightened Refund Policy */}
-          <div className="space-y-8">
-            <div className="flex items-center gap-3 border-b-2 border-[#D4AF37] pb-4">
-              <RefreshCcw className="text-[#D4AF37]" size={28} />
-              <h2 className="text-2xl font-bold text-[#002147]">01. 포인트 및 대리입찰 환불 규정</h2>
+        {/* Points & AI Report Refund */}
+        <div className="mb-20">
+          <h2 className="text-2xl font-black text-[#002147] mb-8 flex items-center gap-3">
+            <Coins className="text-[#D4AF37]" /> 포인트 및 AI 리포트 환불
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100">
+              <h4 className="font-black text-[#002147] mb-4 flex items-center gap-2">
+                <CheckCircle2 size={18} className="text-emerald-500" /> 환불 가능 대상
+              </h4>
+              <ul className="text-sm text-slate-500 space-y-4 font-medium">
+                <li className="flex gap-2">
+                  <span className="text-[#D4AF37] font-black">01.</span>
+                  <span>결제 후 <strong>7일 이내</strong>이며 단 1포인트도 사용하지 않은 경우 (전액 환불)</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-[#D4AF37] font-black">02.</span>
+                  <span>시스템 오류로 인해 AI 분석 리포트가 정상 발행되지 않은 경우</span>
+                </li>
+              </ul>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 relative">
-                <h4 className="font-bold text-[#002147] mb-4 flex items-center gap-2">
-                  <CheckCircle2 size={18} className="text-emerald-600" /> 조건부 환불 (엄격 적용)
-                </h4>
-                <ul className="text-sm text-slate-600 space-y-4">
-                  <li className="flex gap-2">
-                    <span className="text-[#D4AF37] font-bold">1.</span> 
-                    <span>충전 후 <strong>7일 이내</strong>이며 사용 내역(리포트 열람, 상담 등)이 전무한 경우 (위약금 10% 공제 후 환불)</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-[#D4AF37] font-bold">2.</span> 
-                    <span>대리입찰 신청 후 <strong>전문가 배정 이전</strong> 취소 시 (행정 수수료 3만원 공제 후 환불)</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="bg-rose-50/50 p-8 rounded-3xl border border-rose-100 relative">
-                <h4 className="font-bold text-rose-700 mb-4 flex items-center gap-2">
-                  <XCircle size={18} className="text-rose-600" /> 환불 불가 사유 (No-Refund)
-                </h4>
-                <ul className="text-sm text-slate-600 space-y-4">
-                  <li className="flex gap-2">
-                    <span className="text-rose-600 font-bold">•</span> 
-                    <span><strong>디지털 콘텐츠(권리분석 리포트)</strong>를 1회 이상 열람하거나 다운로드한 경우</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-rose-600 font-bold">•</span> 
-                    <span><strong>입찰 기일 2일 전(D-2) 00:00</strong> 이후에는 준비 공정 착수로 인해 환불 불가</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <span className="text-rose-600 font-bold">•</span> 
-                    <span>낙찰 후 단순 변심으로 인한 입찰 포기 및 대금 미납 시</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            
-            <div className="p-6 bg-slate-900 text-white rounded-2xl flex items-start gap-4 shadow-xl">
-              <AlertCircle className="text-[#D4AF37] shrink-0" size={24} />
-              <div className="text-xs leading-relaxed opacity-80">
-                <strong>[행정 위약금 안내]</strong> 결제 수수료 및 관리 비용 발생으로 인해 단순 변심에 의한 포인트 환불 시 <strong>결제 금액의 10%가 위약금으로 자동 공제</strong>됩니다. 이는 서비스 노쇼 및 악의적 결제 취소 방지를 위한 최소한의 장치입니다.
-              </div>
+            <div className="bg-rose-50/30 p-8 rounded-[2.5rem] border border-rose-100">
+              <h4 className="font-black text-rose-700 mb-4 flex items-center gap-2">
+                <XCircle size={18} className="text-rose-500" /> 환불 불가 사유
+              </h4>
+              <ul className="text-sm text-slate-500 space-y-4 font-medium">
+                <li className="flex gap-2">
+                  <span className="text-rose-500 font-black">•</span>
+                  <span><strong>AI 정밀 리포트를 1회 이상 열람</strong>한 경우 (디지털 콘텐츠 특성상 환불 불가)</span>
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-rose-500 font-black">•</span>
+                  <span>무료 이벤트로 지급된 포인트 혹은 보너스 포인트</span>
+                </li>
+              </ul>
             </div>
           </div>
+        </div>
 
-          {/* Section 2: Compensation Policy */}
-          <div className="space-y-8">
-            <div className="flex items-center gap-3 border-b-2 border-[#D4AF37] pb-4">
-              <Scale className="text-[#D4AF37]" size={28} />
-              <h2 className="text-2xl font-bold text-[#002147]">02. 매수신청대리 과실 책임 및 배상</h2>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="bg-white border-2 border-slate-100 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
-                    <ShieldCheck size={32} />
+        {/* Bidding Agency Refund */}
+        <div className="mb-20">
+          <h2 className="text-2xl font-black text-[#002147] mb-8 flex items-center gap-3">
+            <Scale className="text-[#D4AF37]" /> 입찰 대리 위임료 환불 (위약금)
+          </h2>
+          <div className="bg-white border border-slate-200 rounded-[3rem] overflow-hidden shadow-sm">
+             <div className="p-10 border-b border-slate-100 bg-slate-50/50">
+                <p className="text-sm text-slate-500 font-medium">입찰 대리 업무는 전문가 배정 및 서류 검토 비용이 선발생하므로 취소 시점에 따라 위약금이 차등 적용됩니다.</p>
+             </div>
+             <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <div className="p-8 text-center">
+                   <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">입찰 3일 전</div>
+                   <div className="text-xl font-black text-[#002147]">100% 환불</div>
+                   <div className="text-xs text-slate-400 mt-2">행정 수수료 제외</div>
+                </div>
+                <div className="p-8 text-center bg-amber-50/30">
+                   <div className="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-2">입찰 2일 전</div>
+                   <div className="text-xl font-black text-amber-700">50% 환불</div>
+                   <div className="text-xs text-amber-500 mt-2">전문가 배정 위약금</div>
+                </div>
+                <div className="p-8 text-center bg-rose-50/30">
+                   <div className="text-[10px] font-black text-rose-600 uppercase tracking-widest mb-2">입찰 전일/당일</div>
+                   <div className="text-xl font-black text-rose-700">환불 불가</div>
+                   <div className="text-xs text-rose-500 mt-2">서류 제출 완료</div>
+                </div>
+             </div>
+          </div>
+        </div>
+
+        {/* Liability Compensation */}
+        <div className="space-y-8">
+          <div className="flex items-center gap-3 border-b-2 border-[#D4AF37] pb-4">
+            <ShieldCheck className="text-[#D4AF37]" size={28} />
+            <h2 className="text-2xl font-black text-[#002147]">과실 배상 및 보증 안내</h2>
+          </div>
+          <div className="bg-[#002147] rounded-[3rem] p-12 text-white relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/20 blur-3xl rounded-full"></div>
+            <div className="relative z-10">
+               <div className="flex items-center gap-4 mb-8">
+                  <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-[#D4AF37]">
+                     <Gavel size={32} />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-[#002147]">공인중개사법 기반 배상 제도</h4>
-                    <p className="text-xs text-slate-400 mt-1 uppercase tracking-tighter">Certified Professional Indemnity Insurance</p>
+                     <h4 className="text-2xl font-black">2억 원 공제보험 보증</h4>
+                     <p className="text-xs opacity-50 font-medium uppercase tracking-widest">Professional Liability Insurance</p>
                   </div>
-                </div>
-                
-                <p className="text-sm text-slate-600 leading-relaxed mb-8">
-                  JB 하우징의 모든 대리인은 <strong>「매수신청대리인 등록 규칙」 제11조</strong>에 따라 손해배상책임을 보장하기 위해 <strong>2억 원 이상의 공제(보증보험)</strong>에 가입되어 있습니다. 대리인의 고의 또는 중대한 과실로 인하여 의뢰인에게 직접적인 재산상 손해를 입힌 경우, 관계 법령에 따라 배상합니다.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start gap-3 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                    <Landmark size={20} className="text-[#002147] shrink-0" />
-                    <div>
-                      <div className="text-sm font-bold text-[#002147] mb-1">배상 인정 범위</div>
-                      <div className="text-xs text-slate-500 leading-relaxed">등기부상 명백한 권리(대항력 등)의 분석 누락으로 인해 낙찰자가 추가로 부담하게 된 직접 손해액</div>
-                    </div>
+               </div>
+               <p className="opacity-70 leading-relaxed font-medium mb-10">
+                 "회사"는 매수신청대리 사무 수행 중 고의 또는 중대한 과실로 인하여 의뢰인에게 직접적인 재산상 손해를 입힌 경우, 관계 법령에 따라 가입된 <strong>2억 원 한도의 공제(보증보험)</strong>를 통해 손해액을 배상합니다.
+               </p>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-bold opacity-80">
+                  <div className="flex items-start gap-2">
+                     <AlertCircle size={16} className="text-[#D4AF37] shrink-0" />
+                     <span>등기부상 나타나지 않는 특수 권리분석 누락으로 인한 인수 보증금 발생 시</span>
                   </div>
-                  <div className="flex items-start gap-3 p-5 bg-slate-50 rounded-2xl border border-slate-100">
-                    <Gavel size={20} className="text-[#002147] shrink-0" />
-                    <div>
-                      <div className="text-sm font-bold text-[#002147] mb-1">배상 청구 절차</div>
-                      <div className="text-xs text-slate-500 leading-relaxed">법원 판단 또는 한국공인중개사협회 공제심의위원회의 의결을 통해 과실 비율 확정 후 지급</div>
-                    </div>
+                  <div className="flex items-start gap-2">
+                     <AlertCircle size={16} className="text-[#D4AF37] shrink-0" />
+                     <span>대리인의 입찰 서류 작성 실수로 인한 입찰 무효 시 위임료 환불 및 배상</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Exclusion List (Defense) */}
-              <div className="bg-amber-50/50 p-10 rounded-[3rem] border border-amber-100">
-                <h3 className="text-xl font-bold text-[#002147] mb-6 flex items-center gap-2">
-                  <AlertCircle className="text-amber-600" /> 면책 사항 (배상 청구 불가)
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4 text-[13px] text-slate-600 leading-relaxed">
-                  <div className="space-y-3">
-                    <p className="flex gap-2"><strong>•</strong> <span>법원 매각물건명세서의 오기, 서류 누락 등 국가 기관의 원천적 데이터 오류</span></p>
-                    <p className="flex gap-2"><strong>•</strong> <span>건물 내부의 누수, 결로, 보일러 고장 등 점유자 협조 없이는 확인 불가능한 내부 하자</span></p>
-                    <p className="flex gap-2"><strong>•</strong> <span>낙찰 이후 인근 부동산 시세 변동 등 시장 상황에 따른 투자 손실</span></p>
-                  </div>
-                  <div className="space-y-3">
-                    <p className="flex gap-2"><strong>•</strong> <span>의뢰인이 고의로 정보를 누락하거나 허위 서류를 제출하여 발생한 입찰 무효</span></p>
-                    <p className="flex gap-2"><strong>•</strong> <span>분석 시점 이후 기일 연기, 변경 과정에서 발생한 새로운 권리 관계 변동</span></p>
-                    <p className="flex gap-2"><strong>•</strong> <span>명도 과정에서 발생하는 통상적인 이사비 및 강제집행 실비 부담</span></p>
-                  </div>
-                </div>
-              </div>
+               </div>
             </div>
           </div>
-
-          {/* Contact Section */}
-          <div className="text-center py-10 border-t border-slate-100">
-            <p className="text-slate-400 text-sm mb-8 font-medium italic">"안전한 투자는 명확한 규정 이해에서 시작됩니다."</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a href="tel:063-715-1213" className="bg-[#002147] text-white px-10 py-5 rounded-2xl font-black text-lg hover:bg-slate-900 transition shadow-2xl shadow-slate-200 flex items-center justify-center gap-2">
-                법률/보증 상담 센터
-              </a>
-              <button className="bg-white border-2 border-slate-100 text-slate-600 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-slate-50 transition">
-                1:1 문의 (법무팀)
-              </button>
-            </div>
-          </div>
-
         </div>
       </section>
     </div>

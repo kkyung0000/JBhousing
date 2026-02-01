@@ -1,127 +1,94 @@
 
 import React from 'react';
-import { ShieldCheck, Scale, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, Scale, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
 
 export const TermsOfService: React.FC = () => {
   return (
     <div className="bg-white min-h-screen pb-20">
-      <section className="bg-slate-50 py-16 border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="flex items-center gap-3 text-[#D4AF37] mb-4 font-bold uppercase tracking-widest text-xs">
-            <ShieldCheck size={16} /> Legal Documents
+      <section className="bg-[#002147] py-24 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/10 blur-[100px] rounded-full"></div>
+        <div className="max-w-4xl mx-auto px-4 relative z-10">
+          <div className="flex items-center gap-3 text-[#D4AF37] mb-6 font-black uppercase tracking-widest text-xs">
+            <ShieldCheck size={16} /> Legal & Compliance
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#002147] mb-4 font-serif">
-            경매 매수신청대리 서비스 이용약관
+          <h1 className="text-4xl md:text-5xl font-black mb-6 font-serif leading-tight">
+            서비스 이용약관
           </h1>
-          <p className="text-slate-500 text-sm">최근 수정일: 2024년 6월 10일</p>
+          <p className="text-lg opacity-60 font-medium">본 약관은 (주) JB 하우징 '입찰파트너' 서비스 이용에 따른 권리와 의무를 규정합니다.</p>
         </div>
       </section>
 
       <section className="max-w-4xl mx-auto px-4 py-16">
-        <div className="p-6 bg-amber-50 rounded-2xl border border-amber-100 mb-12 flex gap-4">
-          <AlertTriangle className="text-amber-600 shrink-0" size={24} />
-          <p className="text-sm text-amber-800 leading-relaxed">
-            본 서비스는 「공인중개사법」 및 「매수신청대리인 등록 규칙」을 준수합니다. 모든 권리분석 리포트 및 입찰 상담은 법률적 근거를 바탕으로 제공되나, 최종 입찰 결정에 따른 투자 책임은 이용자 본인에게 있습니다.
+        <div className="p-8 bg-amber-50 rounded-[2rem] border border-amber-100 mb-16 flex flex-col md:flex-row gap-6 items-center">
+          <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-[#D4AF37] shadow-sm shrink-0 border border-amber-200">
+            <Scale size={32} />
+          </div>
+          <p className="text-sm text-amber-900 leading-relaxed font-medium">
+            본 서비스는 <strong>「공인중개사법」</strong> 및 <strong>「매수신청대리인 등록 규칙」</strong>에 의거하여 운영됩니다. 
+            모든 입찰 대리 업무는 법원에 등록된 공인중개사가 직접 수행하며, 불법 컨설팅 및 무자격 대리 행위를 엄격히 금지합니다.
           </p>
         </div>
 
-        <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed space-y-10">
-          
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">1</span>
+        <div className="space-y-16">
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black text-[#002147] flex items-center gap-3">
+              <span className="w-10 h-10 bg-[#002147] text-[#D4AF37] rounded-xl flex items-center justify-center text-sm">01</span>
               제1조 (목적)
             </h2>
-            <p className="pl-10">
-              본 약관은 (주) JB 하우징(이하 "회사")이 운영하는 홈페이지(jbhousing2.netlify.app)를 통해 제공하는 부동산 경매 물건 정보 제공 및 매수신청대리 서비스(이하 "서비스")를 이용함에 있어, "회사"와 "이용자"의 권리, 의무 및 책임 사항을 규정함을 목적으로 합니다.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">2</span>
-              제2조 (서비스의 범위 및 자격)
-            </h2>
-            <div className="pl-10 space-y-2">
-              <p>1. "회사"는 법원에 등록된 <strong>매수신청대리인(등록번호: 전주지방법원 00-00-00)</strong>으로서 법령이 허용하는 범위 내에서 업무를 수행합니다.</p>
-              <p>2. 제공되는 서비스는 경매 물건의 권리분석, 현황조사, 입찰가 상담, 입찰표 작성 및 제출 대행에 한합니다.</p>
+            <div className="pl-12 text-slate-600 leading-relaxed font-medium">
+              본 약관은 (주) JB 하우징(이하 "회사")이 제공하는 부동산 경매 정보 제공, AI 권리분석 리포트, 그리고 매수신청대리 위임 서비스(이하 "서비스")를 이용함에 있어 "회사"와 "회원" 간의 이용 조건 및 절차를 규정함을 목적으로 합니다.
             </div>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">3</span>
-              제3조 (대행 수수료 및 비용)
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black text-[#002147] flex items-center gap-3">
+              <span className="w-10 h-10 bg-[#002147] text-[#D4AF37] rounded-xl flex items-center justify-center text-sm">02</span>
+              제2조 (매수신청대리의 위임 및 수수료)
             </h2>
-            <div className="pl-10 space-y-3">
-              <p>이용자는 「공인중개사법」 및 「매수신청대리인 등록 규칙」에 정해진 수수료를 지불해야 합니다. <strong>(모든 수수료는 부가세 별도입니다)</strong></p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>상담 및 권리분석 수수료: 50만 원 범위 내 (협의)</li>
-                <li>매수신청대리 수수료: 낙찰 시 감정가의 1% 또는 낙찰가의 1.5% 범위 내 (협의), 미낙찰 시 5만 원 범위 내</li>
-                <li>실비(원거리 여비, 등기부등본 열람비 등)는 수수료와 별도로 청구될 수 있습니다.</li>
+            <div className="pl-12 space-y-4 text-slate-600 leading-relaxed font-medium">
+              <p>1. "회원"은 본 플랫폼을 통해 "회사"의 소속 전문가에게 법원 경매 입찰 대리를 위임할 수 있습니다.</p>
+              <p>2. "회사"는 「매수신청대리인 등록 규칙」에 정해진 법정 수수료를 청구하며, 이는 다음 각 호와 같습니다 (VAT 별도):</p>
+              <ul className="list-disc pl-5 space-y-2 mt-2">
+                <li><strong>상담 및 권리분석 수수료:</strong> 50만 원 범위 내</li>
+                <li><strong>매수신청대리 수수료:</strong> 낙찰 시 감정가의 1% 또는 낙찰가의 1.5% 중 협의된 금액</li>
+                <li><strong>미낙찰 시 수수료:</strong> 실비 및 행정 비용조로 5만 원 청구</li>
               </ul>
             </div>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">4</span>
-              제4조 (이용자의 의무 및 보증금 관리)
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black text-[#002147] flex items-center gap-3">
+              <span className="w-10 h-10 bg-[#002147] text-[#D4AF37] rounded-xl flex items-center justify-center text-sm">03</span>
+              제3조 (회원의 의무 및 보증금 관리)
             </h2>
-            <div className="pl-10 space-y-2">
-              <p>1. 이용자는 입찰에 필요한 신분증 사본, 인감증명서, 위임장 등을 정확하게 제공해야 하며, 허위 서류로 인한 모든 책임은 이용자에게 있습니다.</p>
-              <p>2. 입찰 보증금은 이용자가 직접 법원 계좌로 입금하거나, "회사"가 지정한 에스크로 계좌를 통해 안전하게 전달되어야 합니다. <strong>"회사" 임직원의 개인 계좌로 입금을 요구하지 않습니다.</strong></p>
+            <div className="pl-12 space-y-4 text-slate-600 leading-relaxed font-medium">
+              <p>1. "회원"은 입찰에 필요한 인감증명서, 위임장, 신분증 사본 등 필수 서류를 "회사"가 정한 기한 내에 정확하게 제공해야 합니다.</p>
+              <p>2. 입찰 보증금은 "회사"가 안내하는 법원 보관금 계좌 또는 에스크로 계좌로 입찰 전일까지 입금 완료되어야 하며, 미입금으로 인한 입찰 불가 시 책임은 "회원"에게 있습니다.</p>
             </div>
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">5</span>
-              제5조 (책임의 한계 및 면책)
+          <div className="space-y-6">
+            <h2 className="text-2xl font-black text-[#002147] flex items-center gap-3">
+              <span className="w-10 h-10 bg-[#002147] text-[#D4AF37] rounded-xl flex items-center justify-center text-sm">04</span>
+              제4조 (책임의 범위)
             </h2>
-            <div className="pl-10 space-y-2">
-              <p>1. "회사"는 신의성실의 원칙에 따라 권리분석을 수행하나, 등기부상 나타나지 않는 유치권, 점유 관계, 법정지상권 등 현장조사의 한계로 발생하는 특수 사정에 대해서는 고의 또는 중과실이 없는 한 책임을 지지 않습니다.</p>
-              <p>2. 최종 입찰가 결정의 책임은 "이용자"에게 있으며, 낙찰 결과(수익성 등)에 대해 "회사"는 보장하지 않습니다.</p>
-              <p>3. 천재지변, 법원의 기일 변경, 공고 오류 등 "회사"의 통제 범위를 벗어난 사유로 발생한 손해에 대해서는 면책됩니다.</p>
+            <div className="pl-12 space-y-4 text-slate-600 leading-relaxed font-medium">
+              <p>1. "회사"는 신의성실의 원칙에 따라 권리분석 리포트를 작성하나, 등기부상 나타나지 않는 특수 권리(유치권, 법정지상권 등)에 대해서는 현장 조사의 한계 내에서 최선을 다하며, 고의가 없는 한 면책됩니다.</p>
+              <p>2. 최종 입찰가 결정은 "회원"의 자기 책임 하에 이루어지며, 낙찰 결과 및 향후 부동산 가치 변동에 대한 책임은 "회원"에게 귀속됩니다.</p>
             </div>
           </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">6</span>
-              제6조 (손해배상 및 보험)
-            </h2>
-            <p className="pl-10">
-              "회사"는 매수신청대리 업무 중 고의 또는 과실로 이용자에게 재산상 손해를 입힌 경우, 관계 법령에 따라 가입된 공제사업(또는 보증보험) 한도 내에서 책임을 집니다.
-            </p>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-bold text-[#002147] mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-[#002147] text-white rounded-lg flex items-center justify-center text-sm">7</span>
-              제7조 (계약의 해지 및 환불)
-            </h2>
-            <div className="pl-10 space-y-2">
-              <p>1. 입찰 기일 <strong>3일 전</strong>까지는 서면 통지로 계약 해지가 가능하며, 이 경우 기발생한 실비를 제외한 수수료를 환불합니다.</p>
-              <p>2. 입찰 당일 취소 또는 이용자의 단순 변심으로 인한 노쇼(No-show) 시 수수료는 반환되지 않습니다.</p>
-            </div>
-          </div>
-
         </div>
 
-        <div className="mt-20 p-8 bg-slate-50 rounded-3xl border border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-[#D4AF37]">
-              <Scale size={24} />
-            </div>
-            <div>
-              <p className="font-bold text-[#002147]">약관 관련 문의</p>
-              <p className="text-sm text-slate-500">궁금하신 사항은 고객센터로 연락주세요.</p>
-            </div>
+        <div className="mt-24 p-12 bg-slate-50 rounded-[3rem] border border-slate-100 text-center">
+          <p className="text-slate-400 font-bold mb-6 italic">"투명한 계약 관리가 안전한 경매 투자의 시작입니다."</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-[#002147] text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-slate-900 transition shadow-xl shadow-blue-900/10">
+              약관 PDF 다운로드
+            </button>
+            <a href="tel:063-715-1213" className="bg-white border-2 border-slate-200 text-[#002147] px-8 py-4 rounded-2xl font-black text-sm hover:bg-slate-50 transition">
+              법률 자문 문의
+            </a>
           </div>
-          <a href="tel:063-715-1213" className="bg-[#002147] text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg shadow-slate-200">
-            063-715-1213
-          </a>
         </div>
       </section>
     </div>

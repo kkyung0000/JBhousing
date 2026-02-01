@@ -20,6 +20,8 @@ import { ReviewList } from './pages/ReviewList';
 import { AiAnalysis } from './pages/AiAnalysis';
 import { Signup } from './pages/Signup';
 import { Login } from './pages/Login';
+import { BiddingServiceCustomer } from './pages/BiddingServiceCustomer';
+import { BiddingServiceAgent } from './pages/BiddingServiceAgent';
 
 const App: React.FC = () => {
   return (
@@ -44,6 +46,9 @@ const App: React.FC = () => {
           <Route path="/points" element={<PointsPurchase />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          {/* 입찰파트너 서비스 경로 */}
+          <Route path="/bidding/customer" element={<BiddingServiceCustomer />} />
+          <Route path="/bidding/agent" element={<BiddingServiceAgent />} />
         </Routes>
       </Layout>
     </Router>

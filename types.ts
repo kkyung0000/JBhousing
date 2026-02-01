@@ -19,7 +19,7 @@ export interface AuctionItem {
   hasPriorityRight: boolean;
   expectedRepairCost: number;
   expectedEvictionCost: number;
-  externalUrl?: string; // 대법원 또는 정보 사이트 원본 링크
+  externalUrl?: string;
 }
 
 export interface PointPackage {
@@ -48,6 +48,26 @@ export interface Agent {
   licenseNumber: string;
   imageUrl: string;
   phone: string;
+}
+
+// 입찰 대리 서비스 타입 추가
+export type BiddingRequestStatus = 'PENDING' | 'REVIEWING' | 'VERIFIED' | 'COMPLETED';
+
+export interface BiddingRequest {
+  id: string;
+  customerId: string;
+  customerName: string;
+  caseNumber: string;
+  propertyTitle: string;
+  status: BiddingRequestStatus;
+  submittedAt: string;
+  documents: {
+    type: 'id_card' | 'seal_certificate' | 'power_of_attorney';
+    status: 'uploaded' | 'missing' | 'rejected';
+    url?: string;
+  }[];
+  agentNotes?: string;
+  aiReportContent?: string;
 }
 
 export interface Review {
