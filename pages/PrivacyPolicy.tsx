@@ -14,7 +14,7 @@ export const PrivacyPolicy: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-black mb-6 font-serif leading-tight">
             개인정보 처리방침
           </h1>
-          <p className="text-lg opacity-60 font-medium">JB 하우징은 의뢰인의 소중한 법적 정보와 개인 데이터를 최우선으로 보호합니다.</p>
+          <p className="text-lg opacity-60 font-medium">입찰파트너는 의뢰인의 소중한 법적 정보와 개인 데이터를 최우선으로 보호합니다.</p>
         </div>
       </section>
 
@@ -73,7 +73,7 @@ export const PrivacyPolicy: React.FC = () => {
           <div className="space-y-4">
             <h2 className="text-2xl font-black text-[#002147]">2. 개인정보의 보유 및 이용 기간</h2>
             <p className="text-slate-600 leading-relaxed font-medium">
-              "회사"는 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 다음의 경우 관련 법령에 의거하여 보관합니다:
+              입찰파트너는 개인정보 수집 및 이용 목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 다음의 경우 관련 법령에 의거하여 보관합니다:
             </p>
             <ul className="list-disc pl-5 space-y-2 text-slate-600 font-medium">
               <li><strong>매수신청대리 관련 서류:</strong> 5년 (매수신청대리인 등록 규칙 제18조에 따른 장부 보존 의무)</li>
@@ -98,7 +98,7 @@ export const PrivacyPolicy: React.FC = () => {
            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 opacity-70 font-medium text-sm">
               <div>
                  <div className="mb-2 uppercase tracking-widest text-[10px] font-black">Chief Officer</div>
-                 <p className="text-lg text-white">김종필 대표이사</p>
+                 <p className="text-lg text-white">전문가 그룹 대표</p>
               </div>
               <div>
                  <div className="mb-2 uppercase tracking-widest text-[10px] font-black">Department</div>

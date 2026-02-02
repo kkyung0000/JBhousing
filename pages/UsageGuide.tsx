@@ -43,7 +43,7 @@ export const UsageGuide: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl font-bold text-[#002147] mb-6">서비스 이용 안내</h1>
           <p className="text-slate-500 max-w-2xl mx-auto">
-            JB 하우징의 대리입찰 서비스는 신청부터 결과 통보까지 <br/>
+            입찰파트너의 대리입찰 서비스는 신청부터 결과 통보까지 <br/>
             모든 과정이 투명하고 안전하게 관리됩니다.
           </p>
         </div>

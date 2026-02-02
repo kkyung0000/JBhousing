@@ -66,34 +66,34 @@ export const BiddingServiceAgent: React.FC = () => {
     <div className="bg-[#0f172a] min-h-screen pb-20">
       <header className="sticky top-0 z-50 bg-[#00152e]/80 backdrop-blur-md border-b border-white/10 px-6 py-6 flex justify-between items-center text-white">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#D4AF37] rounded-xl flex items-center justify-center text-[#002147] shadow-lg shadow-amber-900/20">
+          <div className="w-10 h-10 bg-[#C5A059] rounded-xl flex items-center justify-center text-[#002147] shadow-lg shadow-amber-900/20">
              <Smartphone size={22} />
           </div>
           <div>
-             <h1 className="text-xl font-black font-serif tracking-tight">AGENT HUB</h1>
-             <p className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest">Bidding Partner Console</p>
+             <h1 className="text-xl font-black font-serif tracking-tight">전문가 관제 센터</h1>
+             <p className="text-[10px] font-black text-[#C5A059] uppercase tracking-widest">입찰파트너 에이전트 허브</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-           <span className="text-[11px] font-bold text-slate-400">Live Connect</span>
+           <span className="text-[11px] font-bold text-slate-400">실시간 연결됨</span>
         </div>
       </header>
 
       <div className="max-w-xl mx-auto px-6 py-10 space-y-6">
         <div className="grid grid-cols-2 gap-4">
            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 text-white">
-              <div className="text-[10px] font-black text-[#D4AF37] uppercase tracking-widest mb-2">대기 건수</div>
+              <div className="text-[10px] font-black text-[#C5A059] uppercase tracking-widest mb-2">검토 대기</div>
               <div className="text-3xl font-black">{requests.filter(r => r.status === 'REVIEWING').length}</div>
            </div>
            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 text-white">
-              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">완료 건수</div>
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">처리 완료</div>
               <div className="text-3xl font-black">{requests.filter(r => r.status === 'VERIFIED' || r.status === 'COMPLETED').length}</div>
            </div>
         </div>
 
         <div className="space-y-4">
-          <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest px-1">검토 대기 목록</h2>
+          <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest px-1">의뢰 목록</h2>
           {requests.map((req) => (
             <button 
               key={req.id} 
@@ -106,13 +106,13 @@ export const BiddingServiceAgent: React.FC = () => {
             >
               <div className="flex justify-between items-start mb-4">
                  <div>
-                    <div className="text-[10px] font-bold text-[#D4AF37] mb-1">{req.caseNumber}</div>
+                    <div className="text-[10px] font-bold text-[#C5A059] mb-1">{req.caseNumber}</div>
                     <div className="text-lg font-black text-white">{req.customerName} <span className="text-xs font-medium text-slate-400">의뢰인</span></div>
                  </div>
                  <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter ${
                    req.status === 'VERIFIED' ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'
                  }`}>
-                   {req.status}
+                   {req.status === 'VERIFIED' ? '검증 완료' : '검토 중'}
                  </div>
               </div>
               <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
@@ -127,7 +127,7 @@ export const BiddingServiceAgent: React.FC = () => {
       {selectedRequest && (
         <div className="fixed inset-0 z-[100] bg-[#00152e] text-white flex flex-col overflow-y-auto animate-in slide-in-from-bottom-20 duration-500">
            <div className="sticky top-0 z-10 bg-[#00152e]/90 backdrop-blur-md px-6 py-8 border-b border-white/10 flex items-center justify-between">
-              <button onClick={() => setSelectedRequest(null)} className="flex items-center gap-2 text-slate-400 font-bold"><ArrowLeft size={20}/> 뒤로</button>
+              <button onClick={() => setSelectedRequest(null)} className="flex items-center gap-2 text-slate-400 font-bold"><ArrowLeft size={20}/> 뒤로 가기</button>
               <h3 className="text-lg font-black font-serif">의뢰 정밀 검토</h3>
               <div className="w-10 h-10"></div>
            </div>
@@ -145,7 +145,7 @@ export const BiddingServiceAgent: React.FC = () => {
 
               <div className="space-y-6">
                  <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <CheckSquare size={14} /> 현장 서류 및 입찰금 검증
+                    <CheckSquare size={14} /> 필수 서류 및 입찰금 검증
                  </h5>
                  <div className="grid grid-cols-1 gap-4">
                     {[
@@ -172,21 +172,21 @@ export const BiddingServiceAgent: React.FC = () => {
 
               <div className="space-y-6">
                  <h5 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <MessageCircle size={14} /> 전문가 정밀 소견 (리포트 반영)
+                    <MessageCircle size={14} /> 대리인 정밀 소견 (리포트 반영)
                  </h5>
                  <textarea 
                    value={memo}
                    onChange={(e) => setMemo(e.target.value)}
-                   placeholder="물건의 권리 관계, 명도 특이사항 등을 간단히 입력하세요."
+                   placeholder="물건의 권리 관계, 명도 특이사항 등을 상세히 입력하세요."
                    className="w-full bg-white/5 border border-white/10 rounded-[2rem] p-6 text-lg focus:outline-none focus:ring-4 focus:ring-[#D4AF37]/20 placeholder:text-slate-600 transition-all min-h-[150px]"
                  />
                  
                  <div className="bg-amber-50/5 border border-amber-500/20 p-6 rounded-2xl">
                     <div className="flex items-center gap-2 text-amber-500 text-xs font-bold mb-3 uppercase tracking-widest">
-                       <Gavel size={14} /> Legal Disclaimer
+                       <Gavel size={14} /> 법적 면책 고지
                     </div>
                     <p className="text-[10px] text-slate-400 leading-relaxed">
-                       전문가는 「공인중개사법」에 의거하여 성실히 권리분석을 수행해야 합니다. 거짓 분석 또는 서류 미확인으로 인한 사고 발생 시 등록된 공제보험(2억)을 통해 배상 책임이 발생할 수 있습니다.
+                       전문가는 「공인중개사법」에 의거하여 성실히 권리분석을 수행해야 합니다. 허위 분석 또는 서류 미확인으로 인한 사고 발생 시 등록된 공제보험을 통해 배상 책임이 발생할 수 있습니다.
                     </p>
                  </div>
 
@@ -196,13 +196,13 @@ export const BiddingServiceAgent: React.FC = () => {
                     className="w-full bg-[#D4AF37] text-[#002147] py-6 rounded-3xl font-black text-xl flex items-center justify-center gap-3 shadow-2xl shadow-amber-900/40 active:scale-95 disabled:opacity-50 transition-all"
                  >
                     {isGenerating ? <Loader2 className="animate-spin" /> : <Signature size={24} />}
-                    {isGenerating ? 'AI 리포트 생성 중...' : '디지털 서명 및 리포트 발송'}
+                    {isGenerating ? '리포트 생성 중...' : '디지털 서명 및 리포트 발송'}
                  </button>
               </div>
 
               <div className="bg-white/5 rounded-3xl p-8 border border-white/5 flex items-start gap-4">
                  <ShieldCheck className="text-emerald-500 shrink-0" size={24} />
-                 <p className="text-[11px] text-slate-400 leading-relaxed">리포트 발송 시 고객 앱으로 즉시 푸시 알림이 전송되며, 전문가의 성명과 등록번호가 디지털 인장으로 포함됩니다.</p>
+                 <p className="text-[11px] text-slate-400 leading-relaxed">리포트 발송 시 고객에게 즉시 알림이 전송되며, 전문가의 성명과 등록번호가 공인된 인장으로 포함됩니다.</p>
               </div>
            </div>
         </div>

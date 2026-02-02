@@ -16,7 +16,7 @@ export const ServiceIntro: React.FC = () => {
             알면 돈이되는 <br/> <span className="text-[#D4AF37]">경·공매 재테크 솔루션</span>
           </h1>
           <p className="text-lg opacity-70 max-w-2xl mx-auto leading-relaxed">
-            (주) JB 하우징은 권리분석의 전문성과 실전 낙찰 노하우를 결합하여 <br className="hidden md:block"/>
+            (주) 입찰파트너는 권리분석의 전문성과 실전 낙찰 노하우를 결합하여 <br className="hidden md:block"/>
             고객님의 자산을 안전하게 지키고 수익을 극대화합니다.
           </p>
         </div>
@@ -32,7 +32,7 @@ export const ServiceIntro: React.FC = () => {
               </div>
               <h2 className="text-3xl font-bold text-[#002147] mb-6">안전한 낙찰의 시작, <br/>정밀 권리분석 서비스</h2>
               <p className="text-slate-600 mb-8 leading-relaxed">
-                법원 경매의 리스크는 아는 만큼 보입니다. JB 하우징은 법률 전문가 그룹과 임장 팀이 협업하여 
+                법원 경매의 리스크는 아는 만큼 보입니다. 입찰파트너는 법률 전문가 그룹과 임장 팀이 협업하여 
                 서류상 권리관계는 물론, 현장의 점유 관계와 유치권 여부까지 완벽하게 파악합니다.
               </p>
               <ul className="space-y-4 mb-8">
@@ -104,7 +104,7 @@ export const ServiceIntro: React.FC = () => {
           <h2 className="text-3xl font-bold text-[#002147]">낙찰 물건의 가치를 바꾸는 리모델링</h2>
           <p className="text-slate-600 mt-4 max-w-2xl mx-auto">
             저렴하게 낙찰받는 것만큼 중요한 것은 가치를 높여서 파는 것입니다. <br/>
-            JB 하우징의 인테리어 팀은 트렌디한 디자인으로 매물의 상품성을 극대화합니다.
+            입찰파트너의 인테리어 팀은 트렌디한 디자인으로 매물의 상품성을 극대화합니다.
           </p>
         </div>
 
@@ -136,12 +136,12 @@ export const ServiceIntro: React.FC = () => {
         </div>
       </section>
 
-      {/* Why JB Housing? */}
+      {/* Why Bid Partner? */}
       <section className="py-24 bg-[#002147] text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
            <div className="flex flex-col lg:flex-row gap-20 items-center">
               <div className="lg:w-1/2">
-                 <h2 className="text-4xl font-bold mb-8 font-serif leading-tight">JB 하우징만의 <br/><span className="text-[#D4AF37]">3가지 약속</span></h2>
+                 <h2 className="text-4xl font-bold mb-8 font-serif leading-tight">입찰파트너만의 <br/><span className="text-[#D4AF37]">3가지 약속</span></h2>
                  <div className="space-y-10">
                     <div className="flex gap-6">
                        <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center shrink-0">
@@ -177,7 +177,7 @@ export const ServiceIntro: React.FC = () => {
                  <div className="relative z-10 bg-white/5 border border-white/10 p-12 rounded-3xl backdrop-blur-md">
                     <div className="text-[#D4AF37] font-bold text-sm mb-4 uppercase">Direct Contact</div>
                     <h3 className="text-3xl font-bold mb-6">지금 바로 <br/>전문가와 상의하세요</h3>
-                    <p className="opacity-60 mb-8 leading-relaxed">부동산 경매는 속도가 생명입니다. 궁금하신 점을 남겨주시면 김종필 대표가 직접 답변해 드립니다.</p>
+                    <p className="opacity-60 mb-8 leading-relaxed">부동산 경매는 속도가 생명입니다. 궁금하신 점을 남겨주시면 전문가 그룹이 직접 답변해 드립니다.</p>
                     <Link to="/consult" className="inline-flex items-center gap-2 bg-[#D4AF37] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#b8962f] transition">
                        무료 상담 신청하기 <ArrowRight size={18} />
                     </Link>

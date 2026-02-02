@@ -18,10 +18,11 @@ import { PointsPurchase } from './pages/PointsPurchase';
 import { RefundPolicy } from './pages/RefundPolicy';
 import { ReviewList } from './pages/ReviewList';
 import { AiAnalysis } from './pages/AiAnalysis';
-import { Signup } from './pages/Signup';
-import { Login } from './pages/Login';
 import { BiddingServiceCustomer } from './pages/BiddingServiceCustomer';
 import { BiddingServiceAgent } from './pages/BiddingServiceAgent';
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+import { NotFound } from './pages/NotFound';
 
 const App: React.FC = () => {
   return (
@@ -29,6 +30,8 @@ const App: React.FC = () => {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/services" element={<ServiceIntro />} />
           <Route path="/guide" element={<UsageGuide />} />
           <Route path="/experts" element={<ExpertList />} />
@@ -44,11 +47,10 @@ const App: React.FC = () => {
           <Route path="/consult" element={<Consultation />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/points" element={<PointsPurchase />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          {/* 입찰파트너 서비스 경로 */}
           <Route path="/bidding/customer" element={<BiddingServiceCustomer />} />
           <Route path="/bidding/agent" element={<BiddingServiceAgent />} />
+          {/* Catch-all 404 Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </Router>

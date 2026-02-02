@@ -14,7 +14,7 @@ export const TermsOfService: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-black mb-6 font-serif leading-tight">
             서비스 이용약관
           </h1>
-          <p className="text-lg opacity-60 font-medium">본 약관은 (주) JB 하우징 '입찰파트너' 서비스 이용에 따른 권리와 의무를 규정합니다.</p>
+          <p className="text-lg opacity-60 font-medium">본 약관은 (주) 입찰파트너 서비스 이용에 따른 권리와 의무를 규정합니다.</p>
         </div>
       </section>
 
@@ -36,7 +36,7 @@ export const TermsOfService: React.FC = () => {
               제1조 (목적)
             </h2>
             <div className="pl-12 text-slate-600 leading-relaxed font-medium">
-              본 약관은 (주) JB 하우징(이하 "회사")이 제공하는 부동산 경매 정보 제공, AI 권리분석 리포트, 그리고 매수신청대리 위임 서비스(이하 "서비스")를 이용함에 있어 "회사"와 "회원" 간의 이용 조건 및 절차를 규정함을 목적으로 합니다.
+              본 약관은 (주) 입찰파트너(이하 "회사")가 제공하는 부동산 경매 정보 제공, AI 권리분석 리포트, 그리고 매수신청대리 위임 서비스(이하 "서비스")를 이용함에 있어 "회사"와 "회원" 간의 이용 조건 및 절차를 규정함을 목적으로 합니다.
             </div>
           </div>
 

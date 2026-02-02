@@ -28,7 +28,7 @@ export const ReviewList: React.FC = () => {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 font-serif">낙찰 성공 사례 리스트</h1>
           <p className="text-lg opacity-70 max-w-2xl mx-auto leading-relaxed">
-            JB 하우징과 함께한 {mockReviews.length}명의 실제 고객들의 생생한 낙찰 후기와 <br className="hidden md:block"/>
+            입찰파트너와 함께한 {mockReviews.length}명의 실제 고객들의 생생한 낙찰 후기와 <br className="hidden md:block"/>
             투명한 수익 실현 데이터를 확인하세요.
           </p>
         </div>

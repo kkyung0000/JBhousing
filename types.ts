@@ -2,6 +2,17 @@
 export type AuctionStatus = '신건' | '진행' | '낙찰' | '유찰';
 export type PropertyType = '아파트' | '빌라' | '상가' | '토지';
 
+export interface User {
+  id: string;
+  email: string;
+  password?: string;
+  name: string;
+  phone: string;
+  userType: 'individual' | 'expert' | 'corporate';
+  points: number;
+  createdAt: string;
+}
+
 export interface AuctionItem {
   id: string;
   caseNumber: string;
@@ -48,9 +59,9 @@ export interface Agent {
   licenseNumber: string;
   imageUrl: string;
   phone: string;
+  createdAt?: string;
 }
 
-// 입찰 대리 서비스 타입 추가
 export type BiddingRequestStatus = 'PENDING' | 'REVIEWING' | 'VERIFIED' | 'COMPLETED';
 
 export interface BiddingRequest {
@@ -61,6 +72,7 @@ export interface BiddingRequest {
   propertyTitle: string;
   status: BiddingRequestStatus;
   submittedAt: string;
+  message?: string;
   documents: {
     type: 'id_card' | 'seal_certificate' | 'power_of_attorney';
     status: 'uploaded' | 'missing' | 'rejected';

@@ -14,7 +14,7 @@ export const RefundPolicy: React.FC = () => {
           <h1 className="text-4xl md:text-5xl font-black mb-6 font-serif leading-tight">
             환불 및 과실배상 규정
           </h1>
-          <p className="text-lg opacity-60 font-medium">JB 하우징은 투명한 환불 정책과 책임 있는 과실 배상으로 신뢰를 쌓습니다.</p>
+          <p className="text-lg opacity-60 font-medium">입찰파트너는 투명한 환불 정책과 책임 있는 과실 배상으로 신뢰를 쌓습니다.</p>
         </div>
       </section>
 
@@ -106,7 +106,7 @@ export const RefundPolicy: React.FC = () => {
                   </div>
                </div>
                <p className="opacity-70 leading-relaxed font-medium mb-10">
-                 "회사"는 매수신청대리 사무 수행 중 고의 또는 중대한 과실로 인하여 의뢰인에게 직접적인 재산상 손해를 입힌 경우, 관계 법령에 따라 가입된 <strong>2억 원 한도의 공제(보증보험)</strong>를 통해 손해액을 배상합니다.
+                 입찰파트너는 매수신청대리 사무 수행 중 고의 또는 중대한 과실로 인하여 의뢰인에게 직접적인 재산상 손해를 입힌 경우, 관계 법령에 따라 가입된 <strong>2억 원 한도의 공제(보증보험)</strong>를 통해 손해액을 배상합니다.
                </p>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs font-bold opacity-80">
                   <div className="flex items-start gap-2">
